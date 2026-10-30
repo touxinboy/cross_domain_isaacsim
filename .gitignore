@@ -1,5 +1,6 @@
 # Separate VLN project (exclude the entire directory).
 /vln/
+/codex_plugin_repair/
 
 # Isaac Sim runtime data, local backups and generated thumbnails.
 .runtime/
@@ -14,13 +15,6 @@ checkpoints/
 runs/
 wandb/
 *.log
-*.log.*
-
-# Downloaded model weights; retain model configs and checkpoint lock manifests.
-*.safetensors
-*.pt
-*.pth
-*.ckpt
 
 # Python bytecode, test caches and packaging artifacts.
 __pycache__/
@@ -28,14 +22,9 @@ __pycache__/
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
-.pytype/
-.hypothesis/
-.tox/
-.nox/
 .ipynb_checkpoints/
 .coverage
 .coverage.*
-coverage.xml
 htmlcov/
 *.egg-info/
 build/
@@ -44,8 +33,8 @@ dist/
 # Local environments and credentials; retain shareable examples.
 .venv/
 .venvs/
-venv/
 .cache/
+venv/
 .env
 .env.*
 !.env.example
@@ -61,8 +50,3 @@ venv/
 *.temp
 .DS_Store
 Thumbs.db
-
-# Keep project sources and reproducibility inputs in Git:
-# configs/, scenes/, robots/, assets/, scripts/, tests/, deploy/, docs/,
-# third_party/ (including the custom Transformers source), environment.yml,
-# requirements files, *.lock.json and source/package manifests.
