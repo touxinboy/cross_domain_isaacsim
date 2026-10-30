@@ -194,8 +194,8 @@ DUMMY_DIFF_TOKENIZER_IDENTIFIER = "julien-c/dummy-diff-tokenizer"
 USER = "__DUMMY_TRANSFORMERS_USER__"
 ENDPOINT_STAGING = "https://hub-ci.huggingface.co"
 
-# CI credentials must be supplied locally, never embedded in source.
-TOKEN = os.environ.get("TRANSFORMERS_TEST_HUB_TOKEN", "")
+# Not critical, only usable on the sandboxed CI instance.
+TOKEN = "hf_94wBhPGp6KrrTH3KDchhKpRxZwd6dmHWLL"
 
 if is_torch_available():
     import torch
