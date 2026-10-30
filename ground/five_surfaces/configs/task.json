@@ -1,0 +1,6 @@
+{
+  "task_name": "five_surfaces",
+  "scene_file": "scenes/five_surfaces.usda",
+  "gpu_index": 0,
+  "gui_gpu_index": 0
+}

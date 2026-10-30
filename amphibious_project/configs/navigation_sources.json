@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "status": "msgnav_api_checked_depth_and_pointgoal_loop_prepared_offline_live_validation_pending",
+  "sources": {
+    "MSGNav": {
+      "url": "https://github.com/ylwhxht/MSGNav",
+      "commit": "03681a178d6993265e838e1fbbaf2338c54e1c62",
+      "role": "Original KSS, AVU/CLR prompt construction and two-step VLM decision functions",
+      "limitations": [
+        "Original indoor wording is retained",
+        "Habitat scene construction and perception are not connected to Isaac yet",
+        "Selecting an object is not proof of task success"
+      ]
+    },
+    "OmniNav": {
+      "url": "https://github.com/amap-cvlab/OmniNav",
+      "commit": "e8b485953c6555e841a3283c3e3a4f7d8d0f24c3",
+      "role": "PointGoal input/output convention and dedicated waypoint head",
+      "limitations": [
+        "Requires OmniNav_Slowfast checkpoint and author's Transformers fork",
+        "Generic Qwen chat is not a replacement for the waypoint head",
+        "Habitat pose writes and random unsticking are excluded from physical execution"
+      ]
+    }
+  },
+  "files": {
+    "third_party/MSGNav/src/explore_utils.py": "126df141a4d49630ad7e4619e5a6c027002f176accf9f9bfe25c6e79519cff40",
+    "third_party/MSGNav/src/utils.py": "4dc57ae9250ceb5e4105450d13e53f61fc43c0bed7292413ebcb1d3eb75de6b2",
+    "third_party/OmniNav/infer_ovon_slowfast/qwen_utils.py": "599a72b23f878804147c32e6813c437d56af681ab6cd6ebc8b1e92654e8d1c6c",
+    "third_party/OmniNav/infer_ovon_slowfast/config/habitat/goat_agent_config.yaml": "e23e582910c1849f4daf8f0903d6e68f0da8a18fd6848979df3ba2a974985e69"
+  }
+}

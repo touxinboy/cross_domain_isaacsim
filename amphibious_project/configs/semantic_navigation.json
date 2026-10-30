@@ -1,0 +1,19 @@
+{
+  "target_id": "flat_top_jacket",
+  "instruction": "Navigate to the orange steel jacket support tower whose HIGHEST structural level is a horizontal rectangular platform with safety railings. It has four lattice legs. A pointed or triangular lattice rising above a lower deck does not match this target. Approach the flat-top structure from traversable land and stop outside it.",
+  "semantic_queue": ".runtime/semantic/worker",
+  "control_hz": 20,
+  "max_plan_age_s": 4.0,
+  "max_step_m": 1.5,
+  "execution_slice_s": 2.8,
+  "history_spacing_s": 0.30,
+  "settle_s": 1.5,
+  "max_sim_s": 600.0,
+  "max_wall_s": 3600.0,
+  "max_inference_cycles": 350,
+  "worker_timeout_s": 180.0,
+  "short_waypoint_tolerance_m": 0.06,
+  "maximum_active_perception_scans": 32,
+  "arrival_speed_m_s": 0.10,
+  "note": "Only a target appearance instruction is supplied. Online geometry is built from robot RGB-D. Execution switching uses measured contact and buoyancy; the navigation planner receives no river mesh or target Stage coordinates."
+}

@@ -1,0 +1,278 @@
+#usda 1.0
+(
+    "L17 own dry river channel: two banks, two ramps, riverbed; no water dynamics yet."
+    customLayerData = {
+        string creator = "L17"
+        string stage_name = "river_base"
+        string units = "meters"
+    }
+    defaultPrim = "World"
+    endTimeCode = 600
+    metersPerUnit = 1
+    startTimeCode = 0
+    timeCodesPerSecond = 60
+    upAxis = "Z"
+)
+
+def Xform "World"
+{
+    def Xform "Terrain"
+    {
+        def Mesh "LeftBank" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI", "MaterialBindingAPI"]
+            customData = {
+                double slope_degrees = 0
+                string surface_role = "LeftBank"
+            }
+        )
+        {
+            float3[] extent = [(-10, -6, -2), (-6, 6, 0)]
+            int[] faceVertexCounts = [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3]
+            int[] faceVertexIndices = [0, 3, 2, 0, 2, 1, 4, 5, 6, 4, 6, 7, 0, 1, 5, 0, 5, 4, 1, 2, 6, 1, 6, 5, 2, 3, 7, 2, 7, 6, 3, 0, 4, 3, 4, 7]
+            rel material:binding = </World/Materials/LeftBank>
+            rel material:binding:physics = </World/Materials/LeftBank>
+            normal3f[] normals = [(0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, -0), (0, 1, -0), (0, 1, -0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0)] (
+                interpolation = "faceVarying"
+            )
+            uniform token orientation = "rightHanded"
+            uniform token physics:approximation = "none"
+            bool physics:collisionEnabled = 1
+            point3f[] points = [(-10, -6, -2), (-6, -6, -2), (-6, 6, -2), (-10, 6, -2), (-10, -6, 0), (-6, -6, 0), (-6, 6, 0), (-10, 6, 0)]
+            color3f[] primvars:displayColor = [(0.23, 0.34, 0.16)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "LeftRamp" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI", "MaterialBindingAPI"]
+            customData = {
+                double slope_degrees = 20.556045219583467
+                string surface_role = "LeftRamp"
+            }
+        )
+        {
+            float3[] extent = [(-6, -6, -2), (-2, 6, 0)]
+            int[] faceVertexCounts = [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3]
+            int[] faceVertexIndices = [0, 3, 2, 0, 2, 1, 4, 5, 6, 4, 6, 7, 0, 1, 5, 0, 5, 4, 1, 2, 6, 1, 6, 5, 2, 3, 7, 2, 7, 6, 3, 0, 4, 3, 4, 7]
+            rel material:binding = </World/Materials/LeftRamp>
+            rel material:binding:physics = </World/Materials/LeftRamp>
+            normal3f[] normals = [(0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0.35112345, 0, 0.9363292), (0.35112345, 0, 0.9363292), (0.35112345, 0, 0.9363292), (0.35112345, -0, 0.9363292), (0.35112345, -0, 0.9363292), (0.35112345, -0, 0.9363292), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, -0), (0, 1, -0), (0, 1, -0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0)] (
+                interpolation = "faceVarying"
+            )
+            uniform token orientation = "rightHanded"
+            uniform token physics:approximation = "none"
+            bool physics:collisionEnabled = 1
+            point3f[] points = [(-6, -6, -2), (-2, -6, -2), (-2, 6, -2), (-6, 6, -2), (-6, -6, 0), (-2, -6, -1.5), (-2, 6, -1.5), (-6, 6, 0)]
+            color3f[] primvars:displayColor = [(0.55, 0.39, 0.2)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Riverbed" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI", "MaterialBindingAPI"]
+            customData = {
+                double slope_degrees = 0
+                string surface_role = "Riverbed"
+            }
+        )
+        {
+            float3[] extent = [(-2, -6, -2), (2, 6, -1.5)]
+            int[] faceVertexCounts = [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3]
+            int[] faceVertexIndices = [0, 3, 2, 0, 2, 1, 4, 5, 6, 4, 6, 7, 0, 1, 5, 0, 5, 4, 1, 2, 6, 1, 6, 5, 2, 3, 7, 2, 7, 6, 3, 0, 4, 3, 4, 7]
+            rel material:binding = </World/Materials/Riverbed>
+            rel material:binding:physics = </World/Materials/Riverbed>
+            normal3f[] normals = [(0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, -0), (0, 1, -0), (0, 1, -0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0)] (
+                interpolation = "faceVarying"
+            )
+            uniform token orientation = "rightHanded"
+            uniform token physics:approximation = "none"
+            bool physics:collisionEnabled = 1
+            point3f[] points = [(-2, -6, -2), (2, -6, -2), (2, 6, -2), (-2, 6, -2), (-2, -6, -1.5), (2, -6, -1.5), (2, 6, -1.5), (-2, 6, -1.5)]
+            color3f[] primvars:displayColor = [(0.3, 0.23, 0.15)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "RightRamp" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI", "MaterialBindingAPI"]
+            customData = {
+                double slope_degrees = 20.556045219583467
+                string surface_role = "RightRamp"
+            }
+        )
+        {
+            float3[] extent = [(2, -6, -2), (6, 6, 0)]
+            int[] faceVertexCounts = [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3]
+            int[] faceVertexIndices = [0, 3, 2, 0, 2, 1, 4, 5, 6, 4, 6, 7, 0, 1, 5, 0, 5, 4, 1, 2, 6, 1, 6, 5, 2, 3, 7, 2, 7, 6, 3, 0, 4, 3, 4, 7]
+            rel material:binding = </World/Materials/RightRamp>
+            rel material:binding:physics = </World/Materials/RightRamp>
+            normal3f[] normals = [(0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (-0.35112345, 0, 0.9363292), (-0.35112345, 0, 0.9363292), (-0.35112345, 0, 0.9363292), (-0.35112345, 0, 0.9363292), (-0.35112345, 0, 0.9363292), (-0.35112345, 0, 0.9363292), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, -0), (0, 1, -0), (0, 1, -0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0)] (
+                interpolation = "faceVarying"
+            )
+            uniform token orientation = "rightHanded"
+            uniform token physics:approximation = "none"
+            bool physics:collisionEnabled = 1
+            point3f[] points = [(2, -6, -2), (6, -6, -2), (6, 6, -2), (2, 6, -2), (2, -6, -1.5), (6, -6, 0), (6, 6, 0), (2, 6, -1.5)]
+            color3f[] primvars:displayColor = [(0.55, 0.39, 0.2)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "RightBank" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI", "MaterialBindingAPI"]
+            customData = {
+                double slope_degrees = 0
+                string surface_role = "RightBank"
+            }
+        )
+        {
+            float3[] extent = [(6, -6, -2), (10, 6, 0)]
+            int[] faceVertexCounts = [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3]
+            int[] faceVertexIndices = [0, 3, 2, 0, 2, 1, 4, 5, 6, 4, 6, 7, 0, 1, 5, 0, 5, 4, 1, 2, 6, 1, 6, 5, 2, 3, 7, 2, 7, 6, 3, 0, 4, 3, 4, 7]
+            rel material:binding = </World/Materials/RightBank>
+            rel material:binding:physics = </World/Materials/RightBank>
+            normal3f[] normals = [(0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, -0), (0, 1, -0), (0, 1, -0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0)] (
+                interpolation = "faceVarying"
+            )
+            uniform token orientation = "rightHanded"
+            uniform token physics:approximation = "none"
+            bool physics:collisionEnabled = 1
+            point3f[] points = [(6, -6, -2), (10, -6, -2), (10, 6, -2), (6, 6, -2), (6, -6, 0), (10, -6, 0), (10, 6, 0), (6, 6, 0)]
+            color3f[] primvars:displayColor = [(0.23, 0.34, 0.16)]
+            uniform token subdivisionScheme = "none"
+        }
+    }
+
+    def Scope "Materials"
+    {
+        def Material "LeftBank" (
+            prepend apiSchemas = ["PhysicsMaterialAPI"]
+        )
+        {
+            token outputs:surface.connect = </World/Materials/LeftBank/PreviewSurface.outputs:surface>
+            float physics:dynamicFriction = 0.8
+            float physics:restitution = 0
+            float physics:staticFriction = 0.95
+
+            def Shader "PreviewSurface"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (0.23, 0.34, 0.16)
+                float inputs:metallic = 0
+                float inputs:roughness = 0.9
+                token outputs:surface
+            }
+        }
+
+        def Material "LeftRamp" (
+            prepend apiSchemas = ["PhysicsMaterialAPI"]
+        )
+        {
+            token outputs:surface.connect = </World/Materials/LeftRamp/PreviewSurface.outputs:surface>
+            float physics:dynamicFriction = 0.65
+            float physics:restitution = 0
+            float physics:staticFriction = 0.85
+
+            def Shader "PreviewSurface"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (0.55, 0.39, 0.2)
+                float inputs:metallic = 0
+                float inputs:roughness = 0.9
+                token outputs:surface
+            }
+        }
+
+        def Material "Riverbed" (
+            prepend apiSchemas = ["PhysicsMaterialAPI"]
+        )
+        {
+            token outputs:surface.connect = </World/Materials/Riverbed/PreviewSurface.outputs:surface>
+            float physics:dynamicFriction = 0.5
+            float physics:restitution = 0
+            float physics:staticFriction = 0.7
+
+            def Shader "PreviewSurface"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (0.3, 0.23, 0.15)
+                float inputs:metallic = 0
+                float inputs:roughness = 0.9
+                token outputs:surface
+            }
+        }
+
+        def Material "RightRamp" (
+            prepend apiSchemas = ["PhysicsMaterialAPI"]
+        )
+        {
+            token outputs:surface.connect = </World/Materials/RightRamp/PreviewSurface.outputs:surface>
+            float physics:dynamicFriction = 0.65
+            float physics:restitution = 0
+            float physics:staticFriction = 0.85
+
+            def Shader "PreviewSurface"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (0.55, 0.39, 0.2)
+                float inputs:metallic = 0
+                float inputs:roughness = 0.9
+                token outputs:surface
+            }
+        }
+
+        def Material "RightBank" (
+            prepend apiSchemas = ["PhysicsMaterialAPI"]
+        )
+        {
+            token outputs:surface.connect = </World/Materials/RightBank/PreviewSurface.outputs:surface>
+            float physics:dynamicFriction = 0.8
+            float physics:restitution = 0
+            float physics:staticFriction = 0.95
+
+            def Shader "PreviewSurface"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (0.23, 0.34, 0.16)
+                float inputs:metallic = 0
+                float inputs:roughness = 0.9
+                token outputs:surface
+            }
+        }
+    }
+
+    def Xform "Lighting"
+    {
+        def DistantLight "Sun"
+        {
+            float inputs:angle = 1
+            float inputs:intensity = 2500
+            float3 xformOp:rotateXYZ = (-35, -20, -35)
+            uniform token[] xformOpOrder = ["xformOp:rotateXYZ"]
+        }
+
+        def DomeLight "Sky"
+        {
+            color3f inputs:color = (0.82, 0.9, 1)
+            float inputs:intensity = 450
+        }
+    }
+
+    def PhysicsScene "PhysicsScene" (
+        prepend apiSchemas = ["PhysxSceneAPI"]
+    )
+    {
+        vector3f physics:gravityDirection = (0, 0, -1)
+        float physics:gravityMagnitude = 9.81
+        uniform token physxScene:broadphaseType = "MBP"
+        bool physxScene:enableGPUDynamics = 0
+        uint physxScene:timeStepsPerSecond = 60
+    }
+
+    def Camera "OverviewCamera"
+    {
+        float2 clippingRange = (0.1, 200)
+        float focalLength = 27
+        float horizontalAperture = 36
+        float verticalAperture = 24
+        matrix4d xformOp:transform = ( (0.7840458244617612, 0.6207029443655611, 0, 0), (-0.3578673400265356, 0.45204295582299225, 0.8170606666785178, -0), (0.5071519615326445, -0.6406130040412351, 0.5765517036371117, 0), (19.000000000000007, -24.000000000000004, 21.000000000000007, 1.0000000000000002) )
+        uniform token[] xformOpOrder = ["xformOp:transform"]
+    }
+}
+

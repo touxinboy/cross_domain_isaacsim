@@ -1,0 +1,268 @@
+#usda 1.0
+(
+    defaultPrim = "Jacket"
+    metersPerUnit = 1
+    upAxis = "Z"
+)
+
+def Xform "Jacket" (
+    customData = {
+        dictionary navigation = {
+            string shape = "flat_top"
+        }
+    }
+    doc = "Orange flat-top land jacket; original geometry preserved through a reference."
+    prepend references = @jacket_4leg_v1.usda@
+)
+{
+    over "Materials"
+    {
+        over "YellowSteel"
+        {
+            over "Surface"
+            {
+                color3f inputs:diffuseColor = (0.95, 0.2, 0.025)
+            }
+        }
+
+        over "Braces"
+        {
+            over "Surface"
+            {
+                color3f inputs:diffuseColor = (0.79, 0.145, 0.018)
+            }
+        }
+
+        over "Deck"
+        {
+            over "Surface"
+            {
+                color3f inputs:diffuseColor = (0.72, 0.18, 0.035)
+            }
+        }
+
+        def Material "RailYellow" (
+            prepend apiSchemas = ["PhysicsMaterialAPI"]
+        )
+        {
+            token outputs:surface.connect = </Jacket/Materials/RailYellow/Surface.outputs:surface>
+            float physics:dynamicFriction = 0.6
+            float physics:restitution = 0
+            float physics:staticFriction = 0.6
+
+            def Shader "Surface"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (0.98, 0.65, 0.035)
+                float inputs:metallic = 0.15
+                float inputs:roughness = 0.35
+                token outputs:surface
+            }
+        }
+
+        def Material "UpperRed" (
+            prepend apiSchemas = ["PhysicsMaterialAPI"]
+        )
+        {
+            token outputs:surface.connect = </Jacket/Materials/UpperRed/Surface.outputs:surface>
+            float physics:dynamicFriction = 0.6
+            float physics:restitution = 0
+            float physics:staticFriction = 0.6
+
+            def Shader "Surface"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (0.72, 0.025, 0.012)
+                float inputs:metallic = 0.15
+                float inputs:roughness = 0.36
+                token outputs:surface
+            }
+        }
+    }
+
+    over "Braces"
+    {
+        over "Bay_2_Face_0_A" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </Jacket/Materials/UpperRed>
+            rel material:binding:physics = </Jacket/Materials/UpperRed>
+        }
+
+        over "Bay_2_Face_0_B" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </Jacket/Materials/UpperRed>
+            rel material:binding:physics = </Jacket/Materials/UpperRed>
+        }
+
+        over "Bay_2_Face_1_A" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </Jacket/Materials/UpperRed>
+            rel material:binding:physics = </Jacket/Materials/UpperRed>
+        }
+
+        over "Bay_2_Face_1_B" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </Jacket/Materials/UpperRed>
+            rel material:binding:physics = </Jacket/Materials/UpperRed>
+        }
+
+        over "Bay_2_Face_2_A" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </Jacket/Materials/UpperRed>
+            rel material:binding:physics = </Jacket/Materials/UpperRed>
+        }
+
+        over "Bay_2_Face_2_B" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </Jacket/Materials/UpperRed>
+            rel material:binding:physics = </Jacket/Materials/UpperRed>
+        }
+
+        over "Bay_2_Face_3_A" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </Jacket/Materials/UpperRed>
+            rel material:binding:physics = </Jacket/Materials/UpperRed>
+        }
+
+        over "Bay_2_Face_3_B" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </Jacket/Materials/UpperRed>
+            rel material:binding:physics = </Jacket/Materials/UpperRed>
+        }
+    }
+
+    over "Rails"
+    {
+        over "Post_0" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </Jacket/Materials/RailYellow>
+            rel material:binding:physics = </Jacket/Materials/RailYellow>
+        }
+
+        over "Side_0_0" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </Jacket/Materials/RailYellow>
+            rel material:binding:physics = </Jacket/Materials/RailYellow>
+        }
+
+        over "Side_0_1" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </Jacket/Materials/RailYellow>
+            rel material:binding:physics = </Jacket/Materials/RailYellow>
+        }
+
+        over "Post_1" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </Jacket/Materials/RailYellow>
+            rel material:binding:physics = </Jacket/Materials/RailYellow>
+        }
+
+        over "Side_1_0" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </Jacket/Materials/RailYellow>
+            rel material:binding:physics = </Jacket/Materials/RailYellow>
+        }
+
+        over "Side_1_1" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </Jacket/Materials/RailYellow>
+            rel material:binding:physics = </Jacket/Materials/RailYellow>
+        }
+
+        over "Post_2" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </Jacket/Materials/RailYellow>
+            rel material:binding:physics = </Jacket/Materials/RailYellow>
+        }
+
+        over "Side_2_0" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </Jacket/Materials/RailYellow>
+            rel material:binding:physics = </Jacket/Materials/RailYellow>
+        }
+
+        over "Side_2_1" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </Jacket/Materials/RailYellow>
+            rel material:binding:physics = </Jacket/Materials/RailYellow>
+        }
+
+        over "Post_3" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </Jacket/Materials/RailYellow>
+            rel material:binding:physics = </Jacket/Materials/RailYellow>
+        }
+
+        over "Side_3_0" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </Jacket/Materials/RailYellow>
+            rel material:binding:physics = </Jacket/Materials/RailYellow>
+        }
+
+        over "Side_3_1" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </Jacket/Materials/RailYellow>
+            rel material:binding:physics = </Jacket/Materials/RailYellow>
+        }
+    }
+
+    over "Ladder"
+    {
+        over "Rail_L" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </Jacket/Materials/RailYellow>
+            rel material:binding:physics = </Jacket/Materials/RailYellow>
+        }
+
+        over "Rail_R" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </Jacket/Materials/RailYellow>
+            rel material:binding:physics = </Jacket/Materials/RailYellow>
+        }
+    }
+}
+

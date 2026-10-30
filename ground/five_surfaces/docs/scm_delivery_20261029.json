@@ -1,0 +1,35 @@
+{
+  "native_validation_passed": true,
+  "unit_tests_passed": 23,
+  "native_checks_passed": 38,
+  "tested_project": "/home/touxinboy/HUST/isaacsim/ground/five_surfaces",
+  "validation_report": "docs/scm_validation_20261029.json",
+  "baseline_backup": "ground/.backups/scm_before_20261029",
+  "original_assets_and_dynamics_match": true,
+  "delivery_sha256": {
+    "configs/scm.json": "fe3c97c5068af6a778249e01865bebde68accfaa999ea106b26b2c15addf6a5f",
+    "scripts/scm_terrain.py": "8c64e50149f083334bad754997ccbbb23660dabdb9ab3ed2ef048c9eeefa5442",
+    "scripts/scm_scene.py": "1674e92633700fd648b0cb230b11d420831a02f7ed3e5f6ee3e72933e085ac25",
+    "scripts/ground_tools.py": "44a124b815662c4967e9888454c6e68f3922d9edd3a4559c6d090082d4fa7cdb",
+    "scripts/open_stage.py": "9c1c1dc4fef6bb91a149bb93fc43c76853b18ab863afab98360d466e9b38baa3",
+    "scripts/validate_scm.py": "497ddf88fdae369cdd11f67cf53e354ec6b1d3b96d14d35ca0e2cf0dabb74701",
+    "scripts/validate_scene.py": "aca39966a0cb89a583b5032d8ebfd712ad7a9ece686054b07fb7962c51f988a8",
+    "scripts/validate_telemetry.py": "9297a70815f8ec39011f65e456f988f5329fb219163d9e6ce9d14010e3126f32",
+    "tests/test_scm.py": "26a8cb1e1117175c72280159e0434b06a8025ef0d2e299c93f0a54d52b78aaa6",
+    "README.md": "1a0332ad9ac547b3f762000ef39471afac25da85d09c756c3f379d993683cfe3",
+    "docs/scm_model.md": "affa64df45154d7bab8ce73c59f79b947cffb62677320eca8832fa1f24f05165"
+  },
+  "performance": {
+    "simulated_s": 39.56666873022914,
+    "active_wall_s": 40.58336694300306,
+    "rtf_average": 0.9749479087281789,
+    "mean_scm_ms": 2.656322560219531,
+    "p95_scm_ms": 3.117041399127629
+  },
+  "limitations": [
+    "Uncalibrated material parameters",
+    "2.5D vertical-column soil; no bulk flow or pore pressure",
+    "Equivalent speed-driven rigid tracks; no suspension, links or motor torque feedback",
+    "Average full-route RTF 0.975; faster-than-real-time not demonstrated"
+  ]
+}

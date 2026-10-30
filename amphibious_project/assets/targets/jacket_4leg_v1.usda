@@ -1,0 +1,1465 @@
+#usda 1.0
+(
+    customLayerData = {
+        string owner = "L17"
+        string scope = "Static collision-enabled navigation target; not an engineering or hydrodynamic jacket model."
+        string target_id = "jacket_inspection"
+    }
+    defaultPrim = "Jacket"
+    metersPerUnit = 1
+    upAxis = "Z"
+)
+
+def Xform "Jacket" (
+    prepend apiSchemas = ["SemanticsAPI:Semantics"]
+    doc = "Static collision-enabled navigation target; not an engineering or hydrodynamic jacket model."
+)
+{
+    string semantic:Semantics:params:semanticData = "jacket_structure"
+    string semantic:Semantics:params:semanticType = "class"
+
+    def "Materials"
+    {
+        def Material "YellowSteel" (
+            prepend apiSchemas = ["PhysicsMaterialAPI"]
+        )
+        {
+            token outputs:surface.connect = </Jacket/Materials/YellowSteel/Surface.outputs:surface>
+            float physics:dynamicFriction = 0.6
+            float physics:restitution = 0
+            float physics:staticFriction = 0.6
+
+            def Shader "Surface"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (0.93, 0.56, 0.035)
+                float inputs:metallic = 0.15
+                float inputs:roughness = 0.32
+                token outputs:surface
+            }
+        }
+
+        def Material "Braces" (
+            prepend apiSchemas = ["PhysicsMaterialAPI"]
+        )
+        {
+            token outputs:surface.connect = </Jacket/Materials/Braces/Surface.outputs:surface>
+            float physics:dynamicFriction = 0.6
+            float physics:restitution = 0
+            float physics:staticFriction = 0.6
+
+            def Shader "Surface"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (0.18, 0.24, 0.29)
+                float inputs:metallic = 0.15
+                float inputs:roughness = 0.4
+                token outputs:surface
+            }
+        }
+
+        def Material "Deck" (
+            prepend apiSchemas = ["PhysicsMaterialAPI"]
+        )
+        {
+            token outputs:surface.connect = </Jacket/Materials/Deck/Surface.outputs:surface>
+            float physics:dynamicFriction = 0.6
+            float physics:restitution = 0
+            float physics:staticFriction = 0.6
+
+            def Shader "Surface"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (0.025, 0.25, 0.52)
+                float inputs:metallic = 0.15
+                float inputs:roughness = 0.45
+                token outputs:surface
+            }
+        }
+    }
+
+    def "Legs"
+    {
+        def Cylinder "Leg_0" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 5.97890692351035
+            rel material:binding = </Jacket/Materials/YellowSteel>
+            rel material:binding:physics = </Jacket/Materials/YellowSteel>
+            double radius = 0.14
+            quatf xformOp:orient = (0.99753386, -0.04962977, 0.04962977, 0)
+            double3 xformOp:translate = (-1.496, -1.496, 3.04)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Leg_1" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 5.97890692351035
+            rel material:binding = </Jacket/Materials/YellowSteel>
+            rel material:binding:physics = </Jacket/Materials/YellowSteel>
+            double radius = 0.14
+            quatf xformOp:orient = (0.99753386, -0.04962977, -0.04962977, 0)
+            double3 xformOp:translate = (1.496, -1.496, 3.04)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Leg_2" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 5.97890692351035
+            rel material:binding = </Jacket/Materials/YellowSteel>
+            rel material:binding:physics = </Jacket/Materials/YellowSteel>
+            double radius = 0.14
+            quatf xformOp:orient = (0.99753386, 0.04962977, -0.04962977, 0)
+            double3 xformOp:translate = (1.496, 1.496, 3.04)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Leg_3" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 5.97890692351035
+            rel material:binding = </Jacket/Materials/YellowSteel>
+            rel material:binding:physics = </Jacket/Materials/YellowSteel>
+            double radius = 0.14
+            quatf xformOp:orient = (0.99753386, 0.04962977, 0.04962977, -0)
+            double3 xformOp:translate = (-1.496, 1.496, 3.04)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+    }
+
+    def "Feet"
+    {
+        def Cube "Plate_0" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            rel material:binding = </Jacket/Materials/Braces>
+            rel material:binding:physics = </Jacket/Materials/Braces>
+            double size = 1
+            float3 xformOp:scale = (0.48, 0.48, 0.08)
+            double3 xformOp:translate = (-1.8, -1.8, 0.04)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "Plate_1" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            rel material:binding = </Jacket/Materials/Braces>
+            rel material:binding:physics = </Jacket/Materials/Braces>
+            double size = 1
+            float3 xformOp:scale = (0.48, 0.48, 0.08)
+            double3 xformOp:translate = (1.8, -1.8, 0.04)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "Plate_2" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            rel material:binding = </Jacket/Materials/Braces>
+            rel material:binding:physics = </Jacket/Materials/Braces>
+            double size = 1
+            float3 xformOp:scale = (0.48, 0.48, 0.08)
+            double3 xformOp:translate = (1.8, 1.8, 0.04)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "Plate_3" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            rel material:binding = </Jacket/Materials/Braces>
+            rel material:binding:physics = </Jacket/Materials/Braces>
+            double size = 1
+            float3 xformOp:scale = (0.48, 0.48, 0.08)
+            double3 xformOp:translate = (-1.8, 1.8, 0.04)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+    }
+
+    def "Rings"
+    {
+        def Cylinder "Level_0_Side_0" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 3.552
+            rel material:binding = </Jacket/Materials/YellowSteel>
+            rel material:binding:physics = </Jacket/Materials/YellowSteel>
+            double radius = 0.085
+            quatf xformOp:orient = (0.70710677, 0, 0.70710677, 0)
+            double3 xformOp:translate = (0, -1.776, 0.24)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Level_0_Side_1" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 3.552
+            rel material:binding = </Jacket/Materials/YellowSteel>
+            rel material:binding:physics = </Jacket/Materials/YellowSteel>
+            double radius = 0.085
+            quatf xformOp:orient = (0.70710677, -0.70710677, 0, 0)
+            double3 xformOp:translate = (1.776, 0, 0.24)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Level_0_Side_2" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 3.552
+            rel material:binding = </Jacket/Materials/YellowSteel>
+            rel material:binding:physics = </Jacket/Materials/YellowSteel>
+            double radius = 0.085
+            quatf xformOp:orient = (0.70710677, 0, -0.70710677, 0)
+            double3 xformOp:translate = (0, 1.776, 0.24)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Level_0_Side_3" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 3.552
+            rel material:binding = </Jacket/Materials/YellowSteel>
+            rel material:binding:physics = </Jacket/Materials/YellowSteel>
+            double radius = 0.085
+            quatf xformOp:orient = (0.70710677, 0.70710677, 0, -0)
+            double3 xformOp:translate = (-1.776, 0, 0.24)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Level_1_Side_0" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 3.17600000004
+            rel material:binding = </Jacket/Materials/YellowSteel>
+            rel material:binding:physics = </Jacket/Materials/YellowSteel>
+            double radius = 0.085
+            quatf xformOp:orient = (0.70710677, 0, 0.70710677, 0)
+            double3 xformOp:translate = (0, -1.58800000002, 2.1199999998)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Level_1_Side_1" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 3.17600000004
+            rel material:binding = </Jacket/Materials/YellowSteel>
+            rel material:binding:physics = </Jacket/Materials/YellowSteel>
+            double radius = 0.085
+            quatf xformOp:orient = (0.70710677, -0.70710677, 0, 0)
+            double3 xformOp:translate = (1.58800000002, 0, 2.1199999998)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Level_1_Side_2" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 3.17600000004
+            rel material:binding = </Jacket/Materials/YellowSteel>
+            rel material:binding:physics = </Jacket/Materials/YellowSteel>
+            double radius = 0.085
+            quatf xformOp:orient = (0.70710677, 0, -0.70710677, 0)
+            double3 xformOp:translate = (0, 1.58800000002, 2.1199999998)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Level_1_Side_3" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 3.17600000004
+            rel material:binding = </Jacket/Materials/YellowSteel>
+            rel material:binding:physics = </Jacket/Materials/YellowSteel>
+            double radius = 0.085
+            quatf xformOp:orient = (0.70710677, 0.70710677, 0, -0)
+            double3 xformOp:translate = (-1.58800000002, 0, 2.1199999998)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Level_2_Side_0" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 2.79200000004
+            rel material:binding = </Jacket/Materials/YellowSteel>
+            rel material:binding:physics = </Jacket/Materials/YellowSteel>
+            double radius = 0.085
+            quatf xformOp:orient = (0.70710677, 0, 0.70710677, 0)
+            double3 xformOp:translate = (0, -1.39600000002, 4.0399999998)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Level_2_Side_1" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 2.79200000004
+            rel material:binding = </Jacket/Materials/YellowSteel>
+            rel material:binding:physics = </Jacket/Materials/YellowSteel>
+            double radius = 0.085
+            quatf xformOp:orient = (0.70710677, -0.70710677, 0, 0)
+            double3 xformOp:translate = (1.39600000002, 0, 4.0399999998)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Level_2_Side_2" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 2.79200000004
+            rel material:binding = </Jacket/Materials/YellowSteel>
+            rel material:binding:physics = </Jacket/Materials/YellowSteel>
+            double radius = 0.085
+            quatf xformOp:orient = (0.70710677, 0, -0.70710677, 0)
+            double3 xformOp:translate = (0, 1.39600000002, 4.0399999998)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Level_2_Side_3" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 2.79200000004
+            rel material:binding = </Jacket/Materials/YellowSteel>
+            rel material:binding:physics = </Jacket/Materials/YellowSteel>
+            double radius = 0.085
+            quatf xformOp:orient = (0.70710677, 0.70710677, 0, -0)
+            double3 xformOp:translate = (-1.39600000002, 0, 4.0399999998)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Level_3_Side_0" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 2.4
+            rel material:binding = </Jacket/Materials/YellowSteel>
+            rel material:binding:physics = </Jacket/Materials/YellowSteel>
+            double radius = 0.085
+            quatf xformOp:orient = (0.70710677, 0, 0.70710677, 0)
+            double3 xformOp:translate = (0, -1.2, 6)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Level_3_Side_1" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 2.4
+            rel material:binding = </Jacket/Materials/YellowSteel>
+            rel material:binding:physics = </Jacket/Materials/YellowSteel>
+            double radius = 0.085
+            quatf xformOp:orient = (0.70710677, -0.70710677, 0, 0)
+            double3 xformOp:translate = (1.2, 0, 6)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Level_3_Side_2" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 2.4
+            rel material:binding = </Jacket/Materials/YellowSteel>
+            rel material:binding:physics = </Jacket/Materials/YellowSteel>
+            double radius = 0.085
+            quatf xformOp:orient = (0.70710677, 0, -0.70710677, 0)
+            double3 xformOp:translate = (0, 1.2, 6)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Level_3_Side_3" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 2.4
+            rel material:binding = </Jacket/Materials/YellowSteel>
+            rel material:binding:physics = </Jacket/Materials/YellowSteel>
+            double radius = 0.085
+            quatf xformOp:orient = (0.70710677, 0.70710677, 0, -0)
+            double3 xformOp:translate = (-1.2, 0, 6)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+    }
+
+    def "Joints"
+    {
+        def Cylinder "Collar_0_0" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 0.18
+            rel material:binding = </Jacket/Materials/YellowSteel>
+            rel material:binding:physics = </Jacket/Materials/YellowSteel>
+            double radius = 0.177
+            double3 xformOp:translate = (-1.776, -1.776, 0.24)
+            uniform token[] xformOpOrder = ["xformOp:translate"]
+        }
+
+        def Cylinder "Collar_0_1" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 0.18
+            rel material:binding = </Jacket/Materials/YellowSteel>
+            rel material:binding:physics = </Jacket/Materials/YellowSteel>
+            double radius = 0.177
+            double3 xformOp:translate = (1.776, -1.776, 0.24)
+            uniform token[] xformOpOrder = ["xformOp:translate"]
+        }
+
+        def Cylinder "Collar_0_2" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 0.18
+            rel material:binding = </Jacket/Materials/YellowSteel>
+            rel material:binding:physics = </Jacket/Materials/YellowSteel>
+            double radius = 0.177
+            double3 xformOp:translate = (1.776, 1.776, 0.24)
+            uniform token[] xformOpOrder = ["xformOp:translate"]
+        }
+
+        def Cylinder "Collar_0_3" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 0.18
+            rel material:binding = </Jacket/Materials/YellowSteel>
+            rel material:binding:physics = </Jacket/Materials/YellowSteel>
+            double radius = 0.177
+            double3 xformOp:translate = (-1.776, 1.776, 0.24)
+            uniform token[] xformOpOrder = ["xformOp:translate"]
+        }
+
+        def Cylinder "Collar_1_0" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 0.18
+            rel material:binding = </Jacket/Materials/YellowSteel>
+            rel material:binding:physics = </Jacket/Materials/YellowSteel>
+            double radius = 0.177
+            double3 xformOp:translate = (-1.58800000002, -1.58800000002, 2.1199999998)
+            uniform token[] xformOpOrder = ["xformOp:translate"]
+        }
+
+        def Cylinder "Collar_1_1" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 0.18
+            rel material:binding = </Jacket/Materials/YellowSteel>
+            rel material:binding:physics = </Jacket/Materials/YellowSteel>
+            double radius = 0.177
+            double3 xformOp:translate = (1.58800000002, -1.58800000002, 2.1199999998)
+            uniform token[] xformOpOrder = ["xformOp:translate"]
+        }
+
+        def Cylinder "Collar_1_2" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 0.18
+            rel material:binding = </Jacket/Materials/YellowSteel>
+            rel material:binding:physics = </Jacket/Materials/YellowSteel>
+            double radius = 0.177
+            double3 xformOp:translate = (1.58800000002, 1.58800000002, 2.1199999998)
+            uniform token[] xformOpOrder = ["xformOp:translate"]
+        }
+
+        def Cylinder "Collar_1_3" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 0.18
+            rel material:binding = </Jacket/Materials/YellowSteel>
+            rel material:binding:physics = </Jacket/Materials/YellowSteel>
+            double radius = 0.177
+            double3 xformOp:translate = (-1.58800000002, 1.58800000002, 2.1199999998)
+            uniform token[] xformOpOrder = ["xformOp:translate"]
+        }
+
+        def Cylinder "Collar_2_0" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 0.18
+            rel material:binding = </Jacket/Materials/YellowSteel>
+            rel material:binding:physics = </Jacket/Materials/YellowSteel>
+            double radius = 0.177
+            double3 xformOp:translate = (-1.39600000002, -1.39600000002, 4.0399999998)
+            uniform token[] xformOpOrder = ["xformOp:translate"]
+        }
+
+        def Cylinder "Collar_2_1" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 0.18
+            rel material:binding = </Jacket/Materials/YellowSteel>
+            rel material:binding:physics = </Jacket/Materials/YellowSteel>
+            double radius = 0.177
+            double3 xformOp:translate = (1.39600000002, -1.39600000002, 4.0399999998)
+            uniform token[] xformOpOrder = ["xformOp:translate"]
+        }
+
+        def Cylinder "Collar_2_2" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 0.18
+            rel material:binding = </Jacket/Materials/YellowSteel>
+            rel material:binding:physics = </Jacket/Materials/YellowSteel>
+            double radius = 0.177
+            double3 xformOp:translate = (1.39600000002, 1.39600000002, 4.0399999998)
+            uniform token[] xformOpOrder = ["xformOp:translate"]
+        }
+
+        def Cylinder "Collar_2_3" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 0.18
+            rel material:binding = </Jacket/Materials/YellowSteel>
+            rel material:binding:physics = </Jacket/Materials/YellowSteel>
+            double radius = 0.177
+            double3 xformOp:translate = (-1.39600000002, 1.39600000002, 4.0399999998)
+            uniform token[] xformOpOrder = ["xformOp:translate"]
+        }
+
+        def Cylinder "Collar_3_0" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 0.18
+            rel material:binding = </Jacket/Materials/YellowSteel>
+            rel material:binding:physics = </Jacket/Materials/YellowSteel>
+            double radius = 0.177
+            double3 xformOp:translate = (-1.2, -1.2, 6)
+            uniform token[] xformOpOrder = ["xformOp:translate"]
+        }
+
+        def Cylinder "Collar_3_1" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 0.18
+            rel material:binding = </Jacket/Materials/YellowSteel>
+            rel material:binding:physics = </Jacket/Materials/YellowSteel>
+            double radius = 0.177
+            double3 xformOp:translate = (1.2, -1.2, 6)
+            uniform token[] xformOpOrder = ["xformOp:translate"]
+        }
+
+        def Cylinder "Collar_3_2" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 0.18
+            rel material:binding = </Jacket/Materials/YellowSteel>
+            rel material:binding:physics = </Jacket/Materials/YellowSteel>
+            double radius = 0.177
+            double3 xformOp:translate = (1.2, 1.2, 6)
+            uniform token[] xformOpOrder = ["xformOp:translate"]
+        }
+
+        def Cylinder "Collar_3_3" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 0.18
+            rel material:binding = </Jacket/Materials/YellowSteel>
+            rel material:binding:physics = </Jacket/Materials/YellowSteel>
+            double radius = 0.177
+            double3 xformOp:translate = (-1.2, 1.2, 6)
+            uniform token[] xformOpOrder = ["xformOp:translate"]
+        }
+    }
+
+    def "Braces"
+    {
+        def Cylinder "Bay_0_Face_0_A" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 3.8582690418599683
+            rel material:binding = </Jacket/Materials/Braces>
+            rel material:binding:physics = </Jacket/Materials/Braces>
+            double radius = 0.065
+            quatf xformOp:orient = (0.86234134, -0.028252453, 0.5055386, 0)
+            double3 xformOp:translate = (-0.09399999998999997, -1.68200000001, 1.1799999999000002)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Bay_0_Face_0_B" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 3.8582690418599683
+            rel material:binding = </Jacket/Materials/Braces>
+            rel material:binding:physics = </Jacket/Materials/Braces>
+            double radius = 0.065
+            quatf xformOp:orient = (0.86234134, -0.028252453, -0.5055386, 0)
+            double3 xformOp:translate = (0.09399999998999997, -1.68200000001, 1.1799999999000002)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Bay_0_Face_1_A" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 3.8582690418599683
+            rel material:binding = </Jacket/Materials/Braces>
+            rel material:binding:physics = </Jacket/Materials/Braces>
+            double radius = 0.065
+            quatf xformOp:orient = (0.86234134, -0.5055386, -0.028252453, 0)
+            double3 xformOp:translate = (1.68200000001, -0.09399999998999997, 1.1799999999000002)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Bay_0_Face_1_B" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 3.8582690418599683
+            rel material:binding = </Jacket/Materials/Braces>
+            rel material:binding:physics = </Jacket/Materials/Braces>
+            double radius = 0.065
+            quatf xformOp:orient = (0.86234134, 0.5055386, -0.028252453, 0)
+            double3 xformOp:translate = (1.68200000001, 0.09399999998999997, 1.1799999999000002)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Bay_0_Face_2_A" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 3.8582690418599683
+            rel material:binding = </Jacket/Materials/Braces>
+            rel material:binding:physics = </Jacket/Materials/Braces>
+            double radius = 0.065
+            quatf xformOp:orient = (0.86234134, 0.028252453, -0.5055386, 0)
+            double3 xformOp:translate = (0.09399999998999997, 1.68200000001, 1.1799999999000002)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Bay_0_Face_2_B" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 3.8582690418599683
+            rel material:binding = </Jacket/Materials/Braces>
+            rel material:binding:physics = </Jacket/Materials/Braces>
+            double radius = 0.065
+            quatf xformOp:orient = (0.86234134, 0.028252453, 0.5055386, -0)
+            double3 xformOp:translate = (-0.09399999998999997, 1.68200000001, 1.1799999999000002)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Bay_0_Face_3_A" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 3.8582690418599683
+            rel material:binding = </Jacket/Materials/Braces>
+            rel material:binding:physics = </Jacket/Materials/Braces>
+            double radius = 0.065
+            quatf xformOp:orient = (0.86234134, 0.5055386, 0.028252453, -0)
+            double3 xformOp:translate = (-1.68200000001, 0.09399999998999997, 1.1799999999000002)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Bay_0_Face_3_B" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 3.8582690418599683
+            rel material:binding = </Jacket/Materials/Braces>
+            rel material:binding:physics = </Jacket/Materials/Braces>
+            double radius = 0.065
+            quatf xformOp:orient = (0.86234134, -0.5055386, 0.028252453, 0)
+            double3 xformOp:translate = (-1.68200000001, -0.09399999998999997, 1.1799999999000002)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Bay_1_Face_0_A" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 3.553522196390325
+            rel material:binding = </Jacket/Materials/Braces>
+            rel material:binding:physics = </Jacket/Materials/Braces>
+            double radius = 0.065
+            quatf xformOp:orient = (0.87758446, -0.030783875, 0.47843271, 0)
+            double3 xformOp:translate = (-0.09600000000000009, -1.49200000002, 3.0799999998)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Bay_1_Face_0_B" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 3.553522196390325
+            rel material:binding = </Jacket/Materials/Braces>
+            rel material:binding:physics = </Jacket/Materials/Braces>
+            double radius = 0.065
+            quatf xformOp:orient = (0.87758446, -0.030783875, -0.47843271, 0)
+            double3 xformOp:translate = (0.09600000000000009, -1.49200000002, 3.0799999998)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Bay_1_Face_1_A" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 3.553522196390325
+            rel material:binding = </Jacket/Materials/Braces>
+            rel material:binding:physics = </Jacket/Materials/Braces>
+            double radius = 0.065
+            quatf xformOp:orient = (0.87758446, -0.47843271, -0.030783875, 0)
+            double3 xformOp:translate = (1.49200000002, -0.09600000000000009, 3.0799999998)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Bay_1_Face_1_B" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 3.553522196390325
+            rel material:binding = </Jacket/Materials/Braces>
+            rel material:binding:physics = </Jacket/Materials/Braces>
+            double radius = 0.065
+            quatf xformOp:orient = (0.87758446, 0.47843271, -0.030783875, 0)
+            double3 xformOp:translate = (1.49200000002, 0.09600000000000009, 3.0799999998)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Bay_1_Face_2_A" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 3.553522196390325
+            rel material:binding = </Jacket/Materials/Braces>
+            rel material:binding:physics = </Jacket/Materials/Braces>
+            double radius = 0.065
+            quatf xformOp:orient = (0.87758446, 0.030783875, -0.47843271, 0)
+            double3 xformOp:translate = (0.09600000000000009, 1.49200000002, 3.0799999998)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Bay_1_Face_2_B" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 3.553522196390325
+            rel material:binding = </Jacket/Materials/Braces>
+            rel material:binding:physics = </Jacket/Materials/Braces>
+            double radius = 0.065
+            quatf xformOp:orient = (0.87758446, 0.030783875, 0.47843271, -0)
+            double3 xformOp:translate = (-0.09600000000000009, 1.49200000002, 3.0799999998)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Bay_1_Face_3_A" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 3.553522196390325
+            rel material:binding = </Jacket/Materials/Braces>
+            rel material:binding:physics = </Jacket/Materials/Braces>
+            double radius = 0.065
+            quatf xformOp:orient = (0.87758446, 0.47843271, 0.030783875, -0)
+            double3 xformOp:translate = (-1.49200000002, 0.09600000000000009, 3.0799999998)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Bay_1_Face_3_B" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 3.553522196390325
+            rel material:binding = </Jacket/Materials/Braces>
+            rel material:binding:physics = </Jacket/Materials/Braces>
+            double radius = 0.065
+            quatf xformOp:orient = (0.87758446, -0.47843271, 0.030783875, 0)
+            double3 xformOp:translate = (-1.49200000002, -0.09600000000000009, 3.0799999998)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Bay_2_Face_0_A" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 3.258716311816001
+            rel material:binding = </Jacket/Materials/Braces>
+            rel material:binding:physics = </Jacket/Materials/Braces>
+            double radius = 0.065
+            quatf xformOp:orient = (0.89483625, -0.03360748, 0.44512764, 0)
+            double3 xformOp:translate = (-0.09800000000999998, -1.29800000001, 5.0199999999)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Bay_2_Face_0_B" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 3.258716311816001
+            rel material:binding = </Jacket/Materials/Braces>
+            rel material:binding:physics = </Jacket/Materials/Braces>
+            double radius = 0.065
+            quatf xformOp:orient = (0.89483625, -0.03360748, -0.44512764, 0)
+            double3 xformOp:translate = (0.09800000000999998, -1.29800000001, 5.0199999999)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Bay_2_Face_1_A" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 3.258716311816001
+            rel material:binding = </Jacket/Materials/Braces>
+            rel material:binding:physics = </Jacket/Materials/Braces>
+            double radius = 0.065
+            quatf xformOp:orient = (0.89483625, -0.44512764, -0.03360748, 0)
+            double3 xformOp:translate = (1.29800000001, -0.09800000000999998, 5.0199999999)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Bay_2_Face_1_B" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 3.258716311816001
+            rel material:binding = </Jacket/Materials/Braces>
+            rel material:binding:physics = </Jacket/Materials/Braces>
+            double radius = 0.065
+            quatf xformOp:orient = (0.89483625, 0.44512764, -0.03360748, 0)
+            double3 xformOp:translate = (1.29800000001, 0.09800000000999998, 5.0199999999)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Bay_2_Face_2_A" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 3.258716311816001
+            rel material:binding = </Jacket/Materials/Braces>
+            rel material:binding:physics = </Jacket/Materials/Braces>
+            double radius = 0.065
+            quatf xformOp:orient = (0.89483625, 0.03360748, -0.44512764, 0)
+            double3 xformOp:translate = (0.09800000000999998, 1.29800000001, 5.0199999999)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Bay_2_Face_2_B" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 3.258716311816001
+            rel material:binding = </Jacket/Materials/Braces>
+            rel material:binding:physics = </Jacket/Materials/Braces>
+            double radius = 0.065
+            quatf xformOp:orient = (0.89483625, 0.03360748, 0.44512764, -0)
+            double3 xformOp:translate = (-0.09800000000999998, 1.29800000001, 5.0199999999)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Bay_2_Face_3_A" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 3.258716311816001
+            rel material:binding = </Jacket/Materials/Braces>
+            rel material:binding:physics = </Jacket/Materials/Braces>
+            double radius = 0.065
+            quatf xformOp:orient = (0.89483625, 0.44512764, 0.03360748, -0)
+            double3 xformOp:translate = (-1.29800000001, 0.09800000000999998, 5.0199999999)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Bay_2_Face_3_B" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 3.258716311816001
+            rel material:binding = </Jacket/Materials/Braces>
+            rel material:binding:physics = </Jacket/Materials/Braces>
+            double radius = 0.065
+            quatf xformOp:orient = (0.89483625, -0.44512764, 0.03360748, 0)
+            double3 xformOp:translate = (-1.29800000001, -0.09800000000999998, 5.0199999999)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+    }
+
+    def "Deck"
+    {
+        def Cube "Platform" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            rel material:binding = </Jacket/Materials/Deck>
+            rel material:binding:physics = </Jacket/Materials/Deck>
+            double size = 1
+            float3 xformOp:scale = (2.82, 2.82, 0.14)
+            double3 xformOp:translate = (0, 0, 6.075)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+    }
+
+    def "Rails"
+    {
+        def Cylinder "Post_0" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 1.0499999999999998
+            rel material:binding = </Jacket/Materials/YellowSteel>
+            rel material:binding:physics = </Jacket/Materials/YellowSteel>
+            double radius = 0.035
+            quatf xformOp:orient = (1, 0, 0, 0)
+            double3 xformOp:translate = (-1.3299999999999998, -1.3299999999999998, 6.675000000000001)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Side_0_0" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 2.6599999999999997
+            rel material:binding = </Jacket/Materials/YellowSteel>
+            rel material:binding:physics = </Jacket/Materials/YellowSteel>
+            double radius = 0.028
+            quatf xformOp:orient = (0.70710677, 0, 0.70710677, 0)
+            double3 xformOp:translate = (0, -1.3299999999999998, 6.66)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Side_0_1" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 2.6599999999999997
+            rel material:binding = </Jacket/Materials/YellowSteel>
+            rel material:binding:physics = </Jacket/Materials/YellowSteel>
+            double radius = 0.028
+            quatf xformOp:orient = (0.70710677, 0, 0.70710677, 0)
+            double3 xformOp:translate = (0, -1.3299999999999998, 7.2)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Post_1" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 1.0499999999999998
+            rel material:binding = </Jacket/Materials/YellowSteel>
+            rel material:binding:physics = </Jacket/Materials/YellowSteel>
+            double radius = 0.035
+            quatf xformOp:orient = (1, 0, 0, 0)
+            double3 xformOp:translate = (1.3299999999999998, -1.3299999999999998, 6.675000000000001)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Side_1_0" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 2.6599999999999997
+            rel material:binding = </Jacket/Materials/YellowSteel>
+            rel material:binding:physics = </Jacket/Materials/YellowSteel>
+            double radius = 0.028
+            quatf xformOp:orient = (0.70710677, -0.70710677, 0, 0)
+            double3 xformOp:translate = (1.3299999999999998, 0, 6.66)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Side_1_1" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 2.6599999999999997
+            rel material:binding = </Jacket/Materials/YellowSteel>
+            rel material:binding:physics = </Jacket/Materials/YellowSteel>
+            double radius = 0.028
+            quatf xformOp:orient = (0.70710677, -0.70710677, 0, 0)
+            double3 xformOp:translate = (1.3299999999999998, 0, 7.2)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Post_2" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 1.0499999999999998
+            rel material:binding = </Jacket/Materials/YellowSteel>
+            rel material:binding:physics = </Jacket/Materials/YellowSteel>
+            double radius = 0.035
+            quatf xformOp:orient = (1, 0, 0, 0)
+            double3 xformOp:translate = (1.3299999999999998, 1.3299999999999998, 6.675000000000001)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Side_2_0" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 2.6599999999999997
+            rel material:binding = </Jacket/Materials/YellowSteel>
+            rel material:binding:physics = </Jacket/Materials/YellowSteel>
+            double radius = 0.028
+            quatf xformOp:orient = (0.70710677, 0, -0.70710677, 0)
+            double3 xformOp:translate = (0, 1.3299999999999998, 6.66)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Side_2_1" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 2.6599999999999997
+            rel material:binding = </Jacket/Materials/YellowSteel>
+            rel material:binding:physics = </Jacket/Materials/YellowSteel>
+            double radius = 0.028
+            quatf xformOp:orient = (0.70710677, 0, -0.70710677, 0)
+            double3 xformOp:translate = (0, 1.3299999999999998, 7.2)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Post_3" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 1.0499999999999998
+            rel material:binding = </Jacket/Materials/YellowSteel>
+            rel material:binding:physics = </Jacket/Materials/YellowSteel>
+            double radius = 0.035
+            quatf xformOp:orient = (1, 0, 0, 0)
+            double3 xformOp:translate = (-1.3299999999999998, 1.3299999999999998, 6.675000000000001)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Side_3_0" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 2.6599999999999997
+            rel material:binding = </Jacket/Materials/YellowSteel>
+            rel material:binding:physics = </Jacket/Materials/YellowSteel>
+            double radius = 0.028
+            quatf xformOp:orient = (0.70710677, 0.70710677, 0, -0)
+            double3 xformOp:translate = (-1.3299999999999998, 0, 6.66)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Side_3_1" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 2.6599999999999997
+            rel material:binding = </Jacket/Materials/YellowSteel>
+            rel material:binding:physics = </Jacket/Materials/YellowSteel>
+            double radius = 0.028
+            quatf xformOp:orient = (0.70710677, 0.70710677, 0, -0)
+            double3 xformOp:translate = (-1.3299999999999998, 0, 7.2)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+    }
+
+    def "Ladder"
+    {
+        def Cylinder "Rail_L" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 5.830951894845301
+            rel material:binding = </Jacket/Materials/YellowSteel>
+            rel material:binding:physics = </Jacket/Materials/YellowSteel>
+            double radius = 0.026
+            quatf xformOp:orient = (0.99867207, 0.05151799, 0, -0)
+            double3 xformOp:translate = (-0.24, 1.72, 3.25)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Rail_R" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 5.830951894845301
+            rel material:binding = </Jacket/Materials/YellowSteel>
+            rel material:binding:physics = </Jacket/Materials/YellowSteel>
+            double radius = 0.026
+            quatf xformOp:orient = (0.99867207, 0.05151799, 0, -0)
+            double3 xformOp:translate = (0.24, 1.72, 3.25)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Rung_00" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 0.48
+            rel material:binding = </Jacket/Materials/Braces>
+            rel material:binding:physics = </Jacket/Materials/Braces>
+            double radius = 0.019
+            quatf xformOp:orient = (0.70710677, 0, 0.70710677, 0)
+            double3 xformOp:translate = (0, 2.02, 0.35)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Rung_01" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 0.48
+            rel material:binding = </Jacket/Materials/Braces>
+            rel material:binding:physics = </Jacket/Materials/Braces>
+            double radius = 0.019
+            quatf xformOp:orient = (0.70710677, 0, 0.70710677, 0)
+            double3 xformOp:translate = (0, 1.988421052631579, 0.6552631578947368)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Rung_02" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 0.48
+            rel material:binding = </Jacket/Materials/Braces>
+            rel material:binding:physics = </Jacket/Materials/Braces>
+            double radius = 0.019
+            quatf xformOp:orient = (0.70710677, 0, 0.70710677, 0)
+            double3 xformOp:translate = (0, 1.9568421052631577, 0.9605263157894737)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Rung_03" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 0.48
+            rel material:binding = </Jacket/Materials/Braces>
+            rel material:binding:physics = </Jacket/Materials/Braces>
+            double radius = 0.019
+            quatf xformOp:orient = (0.70710677, 0, 0.70710677, 0)
+            double3 xformOp:translate = (0, 1.9252631578947368, 1.2657894736842106)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Rung_04" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 0.48
+            rel material:binding = </Jacket/Materials/Braces>
+            rel material:binding:physics = </Jacket/Materials/Braces>
+            double radius = 0.019
+            quatf xformOp:orient = (0.70710677, 0, 0.70710677, 0)
+            double3 xformOp:translate = (0, 1.8936842105263159, 1.5710526315789473)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Rung_05" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 0.48
+            rel material:binding = </Jacket/Materials/Braces>
+            rel material:binding:physics = </Jacket/Materials/Braces>
+            double radius = 0.019
+            quatf xformOp:orient = (0.70710677, 0, 0.70710677, 0)
+            double3 xformOp:translate = (0, 1.8621052631578947, 1.8763157894736842)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Rung_06" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 0.48
+            rel material:binding = </Jacket/Materials/Braces>
+            rel material:binding:physics = </Jacket/Materials/Braces>
+            double radius = 0.019
+            quatf xformOp:orient = (0.70710677, 0, 0.70710677, 0)
+            double3 xformOp:translate = (0, 1.8305263157894736, 2.181578947368421)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Rung_07" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 0.48
+            rel material:binding = </Jacket/Materials/Braces>
+            rel material:binding:physics = </Jacket/Materials/Braces>
+            double radius = 0.019
+            quatf xformOp:orient = (0.70710677, 0, 0.70710677, 0)
+            double3 xformOp:translate = (0, 1.7989473684210524, 2.4868421052631575)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Rung_08" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 0.48
+            rel material:binding = </Jacket/Materials/Braces>
+            rel material:binding:physics = </Jacket/Materials/Braces>
+            double radius = 0.019
+            quatf xformOp:orient = (0.70710677, 0, 0.70710677, 0)
+            double3 xformOp:translate = (0, 1.7673684210526317, 2.792105263157895)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Rung_09" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 0.48
+            rel material:binding = </Jacket/Materials/Braces>
+            rel material:binding:physics = </Jacket/Materials/Braces>
+            double radius = 0.019
+            quatf xformOp:orient = (0.70710677, 0, 0.70710677, 0)
+            double3 xformOp:translate = (0, 1.7357894736842105, 3.0973684210526313)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Rung_10" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 0.48
+            rel material:binding = </Jacket/Materials/Braces>
+            rel material:binding:physics = </Jacket/Materials/Braces>
+            double radius = 0.019
+            quatf xformOp:orient = (0.70710677, 0, 0.70710677, 0)
+            double3 xformOp:translate = (0, 1.7042105263157894, 3.4026315789473687)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Rung_11" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 0.48
+            rel material:binding = </Jacket/Materials/Braces>
+            rel material:binding:physics = </Jacket/Materials/Braces>
+            double radius = 0.019
+            quatf xformOp:orient = (0.70710677, 0, 0.70710677, 0)
+            double3 xformOp:translate = (0, 1.6726315789473685, 3.7078947368421056)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Rung_12" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 0.48
+            rel material:binding = </Jacket/Materials/Braces>
+            rel material:binding:physics = </Jacket/Materials/Braces>
+            double radius = 0.019
+            quatf xformOp:orient = (0.70710677, 0, 0.70710677, 0)
+            double3 xformOp:translate = (0, 1.6410526315789473, 4.0131578947368425)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Rung_13" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 0.48
+            rel material:binding = </Jacket/Materials/Braces>
+            rel material:binding:physics = </Jacket/Materials/Braces>
+            double radius = 0.019
+            quatf xformOp:orient = (0.70710677, 0, 0.70710677, 0)
+            double3 xformOp:translate = (0, 1.6094736842105262, 4.31842105263158)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Rung_14" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 0.48
+            rel material:binding = </Jacket/Materials/Braces>
+            rel material:binding:physics = </Jacket/Materials/Braces>
+            double radius = 0.019
+            quatf xformOp:orient = (0.70710677, 0, 0.70710677, 0)
+            double3 xformOp:translate = (0, 1.5778947368421052, 4.623684210526315)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Rung_15" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 0.48
+            rel material:binding = </Jacket/Materials/Braces>
+            rel material:binding:physics = </Jacket/Materials/Braces>
+            double radius = 0.019
+            quatf xformOp:orient = (0.70710677, 0, 0.70710677, 0)
+            double3 xformOp:translate = (0, 1.546315789473684, 4.928947368421053)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Rung_16" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 0.48
+            rel material:binding = </Jacket/Materials/Braces>
+            rel material:binding:physics = </Jacket/Materials/Braces>
+            double radius = 0.019
+            quatf xformOp:orient = (0.70710677, 0, 0.70710677, 0)
+            double3 xformOp:translate = (0, 1.514736842105263, 5.234210526315789)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Rung_17" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 0.48
+            rel material:binding = </Jacket/Materials/Braces>
+            rel material:binding:physics = </Jacket/Materials/Braces>
+            double radius = 0.019
+            quatf xformOp:orient = (0.70710677, 0, 0.70710677, 0)
+            double3 xformOp:translate = (0, 1.4831578947368422, 5.539473684210527)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Rung_18" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 0.48
+            rel material:binding = </Jacket/Materials/Braces>
+            rel material:binding:physics = </Jacket/Materials/Braces>
+            double radius = 0.019
+            quatf xformOp:orient = (0.70710677, 0, 0.70710677, 0)
+            double3 xformOp:translate = (0, 1.451578947368421, 5.844736842105263)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+
+        def Cylinder "Rung_19" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 0.48
+            rel material:binding = </Jacket/Materials/Braces>
+            rel material:binding:physics = </Jacket/Materials/Braces>
+            double radius = 0.019
+            quatf xformOp:orient = (0.70710677, 0, 0.70710677, 0)
+            double3 xformOp:translate = (0, 1.42, 6.15)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+        }
+    }
+}
+

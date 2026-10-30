@@ -1,0 +1,18 @@
+{
+  "enabled": true,
+  "model": "circulating rigid shoes with geometric grouser contact and simplified transmission",
+  "shoes_per_side": 48,
+  "shoe_length_m": 0.045,
+  "shoe_thickness_m": 0.014,
+  "grouser_length_m": 0.012,
+  "grouser_height_m": 0.008,
+  "guide_horn_height_m": 0.016,
+  "road_wheel_radius_m": 0.074,
+  "road_wheel_x_m": [-0.29, -0.145, 0.0, 0.145, 0.29],
+  "return_roller_radius_m": 0.025,
+  "return_roller_x_m": [-0.18, 0.18],
+  "contact_neighbor_shoes": 1,
+  "independent_link_dynamics": false,
+  "suspension_dynamics": false,
+  "parameters_are_measured": false
+}

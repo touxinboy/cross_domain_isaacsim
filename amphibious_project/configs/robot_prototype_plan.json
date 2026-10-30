@@ -1,0 +1,35 @@
+{
+  "status": "design_only_not_instantiated_in_the_scene",
+  "name": "tracked_twin_thruster_amphibian",
+  "body_axes": {"x": "forward", "y": "left", "z": "up"},
+  "reference": "CD-HSSRL geometry scale only; no mesh or controller copied into this project.",
+  "initial_design_values_not_measured": {
+    "hull_length_m": 1.0,
+    "hull_width_m": 0.6,
+    "hull_height_m": 0.36,
+    "total_mass_kg": 48.0,
+    "track_length_m": 1.06,
+    "track_width_m": 0.16,
+    "track_height_m": 0.23,
+    "track_center_separation_m": 0.70,
+    "thruster_count": 2,
+    "thruster_positions_body_m": [[-0.45, 0.24, -0.06], [-0.45, -0.24, -0.06]],
+    "thruster_force_axis_body": [1.0, 0.0, 0.0]
+  },
+  "actuation_interface": {
+    "track_left_surface_speed_m_s": "to_be_implemented",
+    "track_right_surface_speed_m_s": "to_be_implemented",
+    "thruster_left_command": "to_be_implemented",
+    "thruster_right_command": "to_be_implemented"
+  },
+  "parameters_to_calibrate": [
+    "center_of_mass_and_inertia",
+    "track_ground_contact_and_longitudinal_lateral_slip",
+    "sealed_displacement_and_buoyancy_center_vs_immersion",
+    "drag_and_added_mass",
+    "thruster_command_to_force_and_time_constant",
+    "thruster_force_loss_due_to_partial_emergence",
+    "shore_contact_and_buoyancy_overlap"
+  ],
+  "navigation_and_switching_algorithm": "not_implemented"
+}

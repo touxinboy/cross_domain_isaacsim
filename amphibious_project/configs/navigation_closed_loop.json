@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "capture_mode": "paused_static_interface_validation",
+  "worker_queue": ".runtime/navigation/worker",
+  "worker_timeout_s": 120.0,
+  "control_hz": 20,
+  "max_plan_age_s": 2.0,
+  "max_step_m": 1.5,
+  "execution_slice_s": 1.0,
+  "history_spacing_s": 0.25,
+  "settle_s": 1.5,
+  "max_sim_s": 60.0,
+  "max_wall_s": 900.0,
+  "max_inference_cycles": 40,
+  "goal_radius_m": 0.6,
+  "goal_speed_m_s": 0.10,
+  "switch_policy": "reference_ground_truth_baseline",
+  "note": "Prepare offline; validate on Isaac after reconnect. Physics pauses during RGB-D capture and model inference; execution is integrated by PhysX. This is not a real-time navigation result."
+}

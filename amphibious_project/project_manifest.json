@@ -1,0 +1,13 @@
+{
+  "project": "L17 amphibious navigation",
+  "allowed_write_root": "/home/ubuntu/sdc/L17",
+  "isaac_install_read_only": "/home/ubuntu/qsq/isaacsim",
+  "stage": "initial scene and physics verification",
+  "project_stage": "robot_component_checks_passed",
+  "active_scene": "scenes/river_robot_v1.usda",
+  "robot_config": "configs/robot_v1.json",
+  "validation_report": "results/robot_v1/run_20261027_213144/summary.json",
+  "hardware_calibrated": false,
+  "track_model": "equivalent_contact_patches",
+  "navigation_policy_implemented": false
+}

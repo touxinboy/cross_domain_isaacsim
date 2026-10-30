@@ -1,0 +1,49 @@
+{
+  "scene_file": "scenes/river_robot_jackets_v2.usda",
+  "default_target": "jacket_inspection",
+  "palette": {
+    "orange": [0.95, 0.20, 0.025],
+    "orange_brace": [0.79, 0.145, 0.018],
+    "yellow": [0.98, 0.65, 0.035],
+    "red": [0.72, 0.025, 0.012],
+    "deck": [0.72, 0.18, 0.035]
+  },
+  "targets": [
+    {
+      "id": "jacket_inspection",
+      "label": "Land orange flat-top jacket",
+      "asset_file": "assets/targets/jacket_land_v2.usda",
+      "prim_path": "/World/NavigationTargets/Jacket",
+      "center_xy_m": [12.0, -23.0],
+      "start_xy_m": [-12.0, -23.0],
+      "goal_xy_m": [8.2, -23.0],
+      "goal_yaw_deg": 0.0,
+      "goal_radius_m": 0.6,
+      "medium": "land",
+      "shape": "flat_top",
+      "language_instruction_zh": "穿过河流，到对岸橙色平顶导管架前停下，并面向导管架。"
+    },
+    {
+      "id": "water_jacket_inspection",
+      "label": "Water orange pointed-top jacket",
+      "asset_file": "assets/targets/jacket_water_pointed_v2.usda",
+      "prim_path": "/World/NavigationTargets/WaterJacket",
+      "center_y_m": -12.0,
+      "center_x_rule": "river_centerline",
+      "base_span_m": 3.8,
+      "top_span_m": 3.2,
+      "deck_height_above_water_m": 1.5,
+      "deck_span_m": 4.35,
+      "mast_height_m": 4.1,
+      "start_xy_m": [-12.0, -23.0],
+      "goal_xy_m": [-2.009832885981787, -17.0],
+      "goal_yaw_deg": 92.461115,
+      "goal_radius_m": 0.6,
+      "medium": "water",
+      "shape": "pointed_mast",
+      "language_instruction_zh": "到水中左侧红色尖顶的橙色导管架附近，保持漂浮并面向导管架。"
+    }
+  ],
+  "goal_role": "Evaluator references or explicit PointGoal baselines only; keep target coordinates hidden from visual-search policies.",
+  "model_scope": "Simplified static navigation structures inspired by the supplied color reference. No offshore structural or fluid engineering fidelity is claimed."
+}

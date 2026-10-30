@@ -1,0 +1,105 @@
+{
+  "scene_file": "scenes/five_surfaces.usda",
+  "physics_hz": 120,
+  "gravity_m_s2": 9.81,
+  "tile_length_m": 4.0,
+  "tile_width_m": 6.0,
+  "tile_thickness_m": 0.3,
+  "top_z_m": 0.0,
+  "start_position_m": [
+    -8.5,
+    0.0,
+    0.24
+  ],
+  "goal_x_m": 8.5,
+  "drive_speed_m_s": 0.45,
+  "surfaces": [
+    {
+      "id": "Grass",
+      "label": "Grass",
+      "index": 1,
+      "x_min_m": -10,
+      "x_max_m": -6,
+      "y_min_m": -3.0,
+      "y_max_m": 3.0,
+      "color": [
+        0.29,
+        0.37,
+        0.19
+      ],
+      "static_friction": 0.95,
+      "dynamic_friction": 0.75,
+      "restitution": 0.0
+    },
+    {
+      "id": "DrySand",
+      "label": "Dry sand",
+      "index": 2,
+      "x_min_m": -6,
+      "x_max_m": -2,
+      "y_min_m": -3.0,
+      "y_max_m": 3.0,
+      "color": [
+        0.55,
+        0.48,
+        0.31
+      ],
+      "static_friction": 0.75,
+      "dynamic_friction": 0.55,
+      "restitution": 0.0
+    },
+    {
+      "id": "WetSand",
+      "label": "Wet sand",
+      "index": 3,
+      "x_min_m": -2,
+      "x_max_m": 2,
+      "y_min_m": -3.0,
+      "y_max_m": 3.0,
+      "color": [
+        0.36,
+        0.32,
+        0.21
+      ],
+      "static_friction": 0.65,
+      "dynamic_friction": 0.45,
+      "restitution": 0.0
+    },
+    {
+      "id": "Mud",
+      "label": "Mud",
+      "index": 4,
+      "x_min_m": 2,
+      "x_max_m": 6,
+      "y_min_m": -3.0,
+      "y_max_m": 3.0,
+      "color": [
+        0.25,
+        0.22,
+        0.14
+      ],
+      "static_friction": 0.35,
+      "dynamic_friction": 0.22,
+      "restitution": 0.0
+    },
+    {
+      "id": "Riverbed",
+      "label": "Riverbed",
+      "index": 5,
+      "x_min_m": 6,
+      "x_max_m": 10,
+      "y_min_m": -3.0,
+      "y_max_m": 3.0,
+      "color": [
+        0.33,
+        0.3,
+        0.21
+      ],
+      "static_friction": 0.6,
+      "dynamic_friction": 0.4,
+      "restitution": 0.0
+    }
+  ],
+  "soil_deformation_enabled": false,
+  "physics_parameters_changed_from_L17": false
+}

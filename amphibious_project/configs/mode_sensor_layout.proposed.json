@@ -1,0 +1,40 @@
+{
+  "schema": "L17.mode_sensor_layout.design.v1",
+  "status": "design_only_not_attached_or_validated",
+  "navigation_model_input_changed": false,
+  "body_axes": "+X forward, +Y left, +Z up; metres in the current robot rigid-body frame",
+  "purpose": "Independent medium and propulsion-readiness observations for the execution layer",
+  "wet_contact_probes": [
+    {"id": "front_left", "position_body_m": [0.40, 0.44, -0.10]},
+    {"id": "front_right", "position_body_m": [0.40, -0.44, -0.10]},
+    {"id": "rear_left", "position_body_m": [-0.40, 0.44, -0.10]},
+    {"id": "rear_right", "position_body_m": [-0.40, -0.44, -0.10]}
+  ],
+  "thruster_immersion_checks": [
+    {"id": "left", "hub_position_body_m": [-0.56, 0.23, -0.11], "propeller_radius_m": 0.06},
+    {"id": "right", "hub_position_body_m": [-0.56, -0.23, -0.11], "propeller_radius_m": 0.06}
+  ],
+  "other_observations": [
+    {"type": "IMU", "position_body_m": [0, 0, 0], "measurements": ["angular_velocity", "specific_force"], "attitude": "estimated or explicitly marked simulator ground truth"},
+    {"type": "track_contact_load", "channels": ["left", "right"], "status": "native contact signals already available"},
+    {"type": "pressure_draft", "position_body_m": [0, 0, -0.135], "required": false}
+  ],
+  "transition_design": {
+    "LAND_to_HYBRID": "Persistent front wetness while grounded: permit a transition blend, keep submerged-thruster limits",
+    "HYBRID_to_WATER": "Both propellers have adequate immersion and ground support remains low for a dwell interval",
+    "WATER_to_HYBRID": "Persistent track ground contact; restore track authority gradually",
+    "HYBRID_to_LAND": "Ground support is stable and wetness or measured draft is below the calibrated exit threshold",
+    "anti_chatter": "Debounce, separate entry/exit thresholds and minimum dwell; initial 0.3-1.0 s is a calibration range, not a validated constant",
+    "ambiguous_or_missing": "Retain a conservative transition state or stop when propulsion readiness cannot be established; do not infer WATER solely from no ground contact"
+  },
+  "simulation_requirements": [
+    "Wet probes are custom synthetic sensor channels, not an assumed built-in Isaac water sensor.",
+    "Use each probe pose and the local water surface to synthesize only local wetness; add declared latency, noise and splash/dropout conditions.",
+    "Thruster hub wetness alone does not establish full propeller immersion; check blade-top clearance or a calibrated immersion estimate.",
+    "A wet-contact channel cannot prove that the hull is afloat; combine it with support load, attitude and optional pressure/draft.",
+    "Current switch policy uses simulated buoyancy and native contact forces as a reference. Preserve it as a separately labeled baseline until the sensor policy is validated.",
+    "No new collision geometry is attached by this file; real mounting and clearance require review against the track envelopes.",
+    "Log raw measurements, filtered measurements, requested mode, applied mode and transition reason with simulation timestamps.",
+    "Never send privileged water-region labels, buoyancy forces or new sensor channels to MSGNav or OmniNav."
+  ]
+}

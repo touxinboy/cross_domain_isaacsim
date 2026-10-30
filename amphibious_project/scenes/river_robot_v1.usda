@@ -1,0 +1,64 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "L17"
+        bool robot_runtime_required = 1
+    }
+    defaultPrim = "World"
+    endTimeCode = 36000
+    metersPerUnit = 1
+    startTimeCode = 0
+    subLayers = [
+        @river_forest_v1.usda@
+    ]
+    timeCodesPerSecond = 60
+    upAxis = "Z"
+)
+
+over "World"
+{
+    over "PhysicsScene" (
+        prepend apiSchemas = ["PhysxSceneAPI"]
+    )
+    {
+        vector3f physics:gravityDirection = (0, 0, -1)
+        float physics:gravityMagnitude = 9.81
+        uniform token physxScene:broadphaseType = "MBP"
+        bool physxScene:enableGPUDynamics = 0
+        uint physxScene:timeStepsPerSecond = 120
+    }
+
+    def Xform "Robot" (
+        prepend references = @../robots/tracked_twin_thruster_v1.usda@
+    )
+    {
+        quatf xformOp:orient = (1, 0, 0, 0)
+        double3 xformOp:translate = (-12, -29, 1.2879966562975291)
+    }
+
+    over "Cameras"
+    {
+        def Camera "Robot"
+        {
+            float2 clippingRange = (0.03, 250)
+            float focalLength = 35
+            float horizontalAperture = 36
+            float verticalAperture = 20.25
+            matrix4d xformOp:transform = ( (0.7649111981170507, -0.6441357457827799, -2.7755575615628914e-17, 0), (0.23848251185983738, 0.2831979828335567, 0.9289375619792899, 0), (-0.5983618892711672, -0.7105547435095106, 0.3702364189865348, 0), (-13.599999999999994, -30.899999999999995, 2.3379966562975287, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+        }
+    }
+
+    over "Water"
+    {
+        over "Surface" (
+            customData = {
+                string purpose_note = "Visual surface; distributed buoyancy and drag run in robot_runtime.py."
+                bool water_dynamics_enabled = 1
+            }
+        )
+        {
+        }
+    }
+}
+

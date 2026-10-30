@@ -1,0 +1,456 @@
+#usda 1.0
+(
+    defaultPrim = "World"
+    metersPerUnit = 1
+    upAxis = "Z"
+    timeCodesPerSecond = 60
+    startTimeCode = 0
+    endTimeCode = 36000
+    customLayerData = { string purpose = "L17 five-surface rigid baseline; no soil model changes" }
+)
+def Xform "World"
+{
+    def PhysicsScene "PhysicsScene" (prepend apiSchemas = ["PhysxSceneAPI"])
+    {
+        vector3f physics:gravityDirection = (0, 0, -1)
+        float physics:gravityMagnitude = 9.81
+        uint physxScene:timeStepsPerSecond = 120
+        bool physxScene:enableGPUDynamics = false
+        token physxScene:broadphaseType = "MBP"
+    }
+    def Scope "Materials" { 
+        def Material "Grass" (prepend apiSchemas = ["PhysicsMaterialAPI"])
+        {
+            float physics:staticFriction = 0.95
+            float physics:dynamicFriction = 0.75
+            float physics:restitution = 0.0
+            token outputs:surface.connect = </World/Materials/Grass/Surface.outputs:surface>
+            def Shader "Surface"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (0.29, 0.37, 0.19)
+                float inputs:roughness = 0.9
+                float inputs:metallic = 0
+                token outputs:surface
+            }
+        }
+
+        def Material "DrySand" (prepend apiSchemas = ["PhysicsMaterialAPI"])
+        {
+            float physics:staticFriction = 0.75
+            float physics:dynamicFriction = 0.55
+            float physics:restitution = 0.0
+            token outputs:surface.connect = </World/Materials/DrySand/Surface.outputs:surface>
+            def Shader "Surface"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (0.55, 0.48, 0.31)
+                float inputs:roughness = 0.9
+                float inputs:metallic = 0
+                token outputs:surface
+            }
+        }
+
+        def Material "WetSand" (prepend apiSchemas = ["PhysicsMaterialAPI"])
+        {
+            float physics:staticFriction = 0.65
+            float physics:dynamicFriction = 0.45
+            float physics:restitution = 0.0
+            token outputs:surface.connect = </World/Materials/WetSand/Surface.outputs:surface>
+            def Shader "Surface"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (0.36, 0.32, 0.21)
+                float inputs:roughness = 0.9
+                float inputs:metallic = 0
+                token outputs:surface
+            }
+        }
+
+        def Material "Mud" (prepend apiSchemas = ["PhysicsMaterialAPI"])
+        {
+            float physics:staticFriction = 0.35
+            float physics:dynamicFriction = 0.22
+            float physics:restitution = 0.0
+            token outputs:surface.connect = </World/Materials/Mud/Surface.outputs:surface>
+            def Shader "Surface"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (0.25, 0.22, 0.14)
+                float inputs:roughness = 0.9
+                float inputs:metallic = 0
+                token outputs:surface
+            }
+        }
+
+        def Material "Riverbed" (prepend apiSchemas = ["PhysicsMaterialAPI"])
+        {
+            float physics:staticFriction = 0.6
+            float physics:dynamicFriction = 0.4
+            float physics:restitution = 0.0
+            token outputs:surface.connect = </World/Materials/Riverbed/Surface.outputs:surface>
+            def Shader "Surface"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (0.33, 0.3, 0.21)
+                float inputs:roughness = 0.9
+                float inputs:metallic = 0
+                token outputs:surface
+            }
+        }
+ }
+    def Xform "Ground" { 
+        def Mesh "Grass" (prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI", "MaterialBindingAPI"])
+        {
+            bool physics:collisionEnabled = true
+            token physics:approximation = "none"
+            rel material:binding = </World/Materials/Grass>
+            rel material:binding:physics = </World/Materials/Grass>
+            point3f[] points = [(-10, -3, -0.3), (-6, -3, -0.3), (-6, 3, -0.3), (-10, 3, -0.3), (-10, -3, 0), (-6, -3, 0), (-6, 3, 0), (-10, 3, 0)]
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0,3,2,1, 4,5,6,7, 0,1,5,4, 1,2,6,5, 2,3,7,6, 3,0,4,7]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "DrySand" (prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI", "MaterialBindingAPI"])
+        {
+            bool physics:collisionEnabled = true
+            token physics:approximation = "none"
+            rel material:binding = </World/Materials/DrySand>
+            rel material:binding:physics = </World/Materials/DrySand>
+            point3f[] points = [(-6, -3, -0.3), (-2, -3, -0.3), (-2, 3, -0.3), (-6, 3, -0.3), (-6, -3, 0), (-2, -3, 0), (-2, 3, 0), (-6, 3, 0)]
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0,3,2,1, 4,5,6,7, 0,1,5,4, 1,2,6,5, 2,3,7,6, 3,0,4,7]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "WetSand" (prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI", "MaterialBindingAPI"])
+        {
+            bool physics:collisionEnabled = true
+            token physics:approximation = "none"
+            rel material:binding = </World/Materials/WetSand>
+            rel material:binding:physics = </World/Materials/WetSand>
+            point3f[] points = [(-2, -3, -0.3), (2, -3, -0.3), (2, 3, -0.3), (-2, 3, -0.3), (-2, -3, 0), (2, -3, 0), (2, 3, 0), (-2, 3, 0)]
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0,3,2,1, 4,5,6,7, 0,1,5,4, 1,2,6,5, 2,3,7,6, 3,0,4,7]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Mud" (prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI", "MaterialBindingAPI"])
+        {
+            bool physics:collisionEnabled = true
+            token physics:approximation = "none"
+            rel material:binding = </World/Materials/Mud>
+            rel material:binding:physics = </World/Materials/Mud>
+            point3f[] points = [(2, -3, -0.3), (6, -3, -0.3), (6, 3, -0.3), (2, 3, -0.3), (2, -3, 0), (6, -3, 0), (6, 3, 0), (2, 3, 0)]
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0,3,2,1, 4,5,6,7, 0,1,5,4, 1,2,6,5, 2,3,7,6, 3,0,4,7]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Riverbed" (prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI", "MaterialBindingAPI"])
+        {
+            bool physics:collisionEnabled = true
+            token physics:approximation = "none"
+            rel material:binding = </World/Materials/Riverbed>
+            rel material:binding:physics = </World/Materials/Riverbed>
+            point3f[] points = [(6, -3, -0.3), (10, -3, -0.3), (10, 3, -0.3), (6, 3, -0.3), (6, -3, 0), (10, -3, 0), (10, 3, 0), (6, 3, 0)]
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0,3,2,1, 4,5,6,7, 0,1,5,4, 1,2,6,5, 2,3,7,6, 3,0,4,7]
+            uniform token subdivisionScheme = "none"
+        }
+ }
+    def Xform "Markings" { 
+        def Cube "Number1_b"
+        {
+            double size = 1
+            color3f[] primvars:displayColor = [(0.94, 0.95, 0.93)]
+            double3 xformOp:translate = (-7.81, 2.5, 0.007)
+            double3 xformOp:scale = (0.055, 0.25, 0.008)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "Number1_c"
+        {
+            double size = 1
+            color3f[] primvars:displayColor = [(0.94, 0.95, 0.93)]
+            double3 xformOp:translate = (-7.81, 2.2, 0.007)
+            double3 xformOp:scale = (0.055, 0.25, 0.008)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "Number2_a"
+        {
+            double size = 1
+            color3f[] primvars:displayColor = [(0.94, 0.95, 0.93)]
+            double3 xformOp:translate = (-4, 2.65, 0.007)
+            double3 xformOp:scale = (0.38, 0.055, 0.008)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "Number2_b"
+        {
+            double size = 1
+            color3f[] primvars:displayColor = [(0.94, 0.95, 0.93)]
+            double3 xformOp:translate = (-3.81, 2.5, 0.007)
+            double3 xformOp:scale = (0.055, 0.25, 0.008)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "Number2_g"
+        {
+            double size = 1
+            color3f[] primvars:displayColor = [(0.94, 0.95, 0.93)]
+            double3 xformOp:translate = (-4, 2.35, 0.007)
+            double3 xformOp:scale = (0.38, 0.055, 0.008)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "Number2_e"
+        {
+            double size = 1
+            color3f[] primvars:displayColor = [(0.94, 0.95, 0.93)]
+            double3 xformOp:translate = (-4.19, 2.2, 0.007)
+            double3 xformOp:scale = (0.055, 0.25, 0.008)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "Number2_d"
+        {
+            double size = 1
+            color3f[] primvars:displayColor = [(0.94, 0.95, 0.93)]
+            double3 xformOp:translate = (-4, 2.05, 0.007)
+            double3 xformOp:scale = (0.38, 0.055, 0.008)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "Boundary2"
+        {
+            double size = 1
+            color3f[] primvars:displayColor = [(0.94, 0.95, 0.93)]
+            double3 xformOp:translate = (-6, 0, 0.004)
+            double3 xformOp:scale = (0.035, 6, 0.005)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "Number3_a"
+        {
+            double size = 1
+            color3f[] primvars:displayColor = [(0.94, 0.95, 0.93)]
+            double3 xformOp:translate = (0, 2.65, 0.007)
+            double3 xformOp:scale = (0.38, 0.055, 0.008)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "Number3_b"
+        {
+            double size = 1
+            color3f[] primvars:displayColor = [(0.94, 0.95, 0.93)]
+            double3 xformOp:translate = (0.19, 2.5, 0.007)
+            double3 xformOp:scale = (0.055, 0.25, 0.008)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "Number3_g"
+        {
+            double size = 1
+            color3f[] primvars:displayColor = [(0.94, 0.95, 0.93)]
+            double3 xformOp:translate = (0, 2.35, 0.007)
+            double3 xformOp:scale = (0.38, 0.055, 0.008)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "Number3_c"
+        {
+            double size = 1
+            color3f[] primvars:displayColor = [(0.94, 0.95, 0.93)]
+            double3 xformOp:translate = (0.19, 2.2, 0.007)
+            double3 xformOp:scale = (0.055, 0.25, 0.008)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "Number3_d"
+        {
+            double size = 1
+            color3f[] primvars:displayColor = [(0.94, 0.95, 0.93)]
+            double3 xformOp:translate = (0, 2.05, 0.007)
+            double3 xformOp:scale = (0.38, 0.055, 0.008)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "Boundary3"
+        {
+            double size = 1
+            color3f[] primvars:displayColor = [(0.94, 0.95, 0.93)]
+            double3 xformOp:translate = (-2, 0, 0.004)
+            double3 xformOp:scale = (0.035, 6, 0.005)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "Number4_f"
+        {
+            double size = 1
+            color3f[] primvars:displayColor = [(0.94, 0.95, 0.93)]
+            double3 xformOp:translate = (3.81, 2.5, 0.007)
+            double3 xformOp:scale = (0.055, 0.25, 0.008)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "Number4_g"
+        {
+            double size = 1
+            color3f[] primvars:displayColor = [(0.94, 0.95, 0.93)]
+            double3 xformOp:translate = (4, 2.35, 0.007)
+            double3 xformOp:scale = (0.38, 0.055, 0.008)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "Number4_b"
+        {
+            double size = 1
+            color3f[] primvars:displayColor = [(0.94, 0.95, 0.93)]
+            double3 xformOp:translate = (4.19, 2.5, 0.007)
+            double3 xformOp:scale = (0.055, 0.25, 0.008)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "Number4_c"
+        {
+            double size = 1
+            color3f[] primvars:displayColor = [(0.94, 0.95, 0.93)]
+            double3 xformOp:translate = (4.19, 2.2, 0.007)
+            double3 xformOp:scale = (0.055, 0.25, 0.008)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "Boundary4"
+        {
+            double size = 1
+            color3f[] primvars:displayColor = [(0.94, 0.95, 0.93)]
+            double3 xformOp:translate = (2, 0, 0.004)
+            double3 xformOp:scale = (0.035, 6, 0.005)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "Number5_a"
+        {
+            double size = 1
+            color3f[] primvars:displayColor = [(0.94, 0.95, 0.93)]
+            double3 xformOp:translate = (8, 2.65, 0.007)
+            double3 xformOp:scale = (0.38, 0.055, 0.008)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "Number5_f"
+        {
+            double size = 1
+            color3f[] primvars:displayColor = [(0.94, 0.95, 0.93)]
+            double3 xformOp:translate = (7.81, 2.5, 0.007)
+            double3 xformOp:scale = (0.055, 0.25, 0.008)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "Number5_g"
+        {
+            double size = 1
+            color3f[] primvars:displayColor = [(0.94, 0.95, 0.93)]
+            double3 xformOp:translate = (8, 2.35, 0.007)
+            double3 xformOp:scale = (0.38, 0.055, 0.008)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "Number5_c"
+        {
+            double size = 1
+            color3f[] primvars:displayColor = [(0.94, 0.95, 0.93)]
+            double3 xformOp:translate = (8.19, 2.2, 0.007)
+            double3 xformOp:scale = (0.055, 0.25, 0.008)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "Number5_d"
+        {
+            double size = 1
+            color3f[] primvars:displayColor = [(0.94, 0.95, 0.93)]
+            double3 xformOp:translate = (8, 2.05, 0.007)
+            double3 xformOp:scale = (0.38, 0.055, 0.008)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "Boundary5"
+        {
+            double size = 1
+            color3f[] primvars:displayColor = [(0.94, 0.95, 0.93)]
+            double3 xformOp:translate = (6, 0, 0.004)
+            double3 xformOp:scale = (0.035, 6, 0.005)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "StartLine"
+        {
+            double size = 1
+            color3f[] primvars:displayColor = [(0.12, 0.75, 0.28)]
+            double3 xformOp:translate = (-8.5, 0, 0.005)
+            double3 xformOp:scale = (0.06, 4.3, 0.005)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "FinishLine"
+        {
+            double size = 1
+            color3f[] primvars:displayColor = [(0.95, 0.25, 0.08)]
+            double3 xformOp:translate = (8.5, 0, 0.005)
+            double3 xformOp:scale = (0.06, 4.3, 0.005)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+ }
+    def Xform "Robot" (prepend references = @../robots/tracked_twin_thruster_v1.usda@)
+    {
+        double3 xformOp:translate = (-8.5, 0, 0.24)
+        quatf xformOp:orient = (1, 0, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+    }
+    def Xform "Cameras" { 
+        def Camera "Overview"
+        {
+            float focalLength = 28
+            float horizontalAperture = 36
+            float verticalAperture = 20.25
+            float2 clippingRange = (0.03, 250)
+            matrix4d xformOp:transform = ((0.874157276, 0.485642931, -0, 0), (-0.2979769, 0.53635842, 0.789638786, 0), (0.383482494, -0.69026849, 0.613571991, 0), (10, -18, 16, 1))
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+        }
+
+        def Camera "Robot"
+        {
+            float focalLength = 28
+            float horizontalAperture = 36
+            float verticalAperture = 20.25
+            float2 clippingRange = (0.03, 250)
+            matrix4d xformOp:transform = ((0.780868809, -0.624695048, 0, 0), (0.299623796, 0.374529744, 0.877469687, 0), (-0.548150968, -0.68518871, 0.479632097, 0), (-11.5, -4, 3, 1))
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+        }
+
+        def Camera "Side"
+        {
+            float focalLength = 28
+            float horizontalAperture = 36
+            float verticalAperture = 20.25
+            float2 clippingRange = (0.03, 250)
+            matrix4d xformOp:transform = ((1, 0, -0, 0), (0, 0.341345825, 0.939937779, 0), (0, -0.939937779, 0.341345825, 0), (0, -19, 7, 1))
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+        }
+ }
+    def DomeLight "Sky"
+    {
+        float inputs:intensity = 700
+        color3f inputs:color = (0.82, 0.89, 1)
+    }
+    def DistantLight "Sun"
+    {
+        float inputs:intensity = 1800
+        float inputs:angle = 1
+        float3 xformOp:rotateXYZ = (-40, -25, -25)
+        uniform token[] xformOpOrder = ["xformOp:rotateXYZ"]
+    }
+}

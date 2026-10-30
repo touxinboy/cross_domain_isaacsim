@@ -1,0 +1,27 @@
+{
+  "scene_name": "river_forest_v1",
+  "seed": 17027,
+  "width_m": 32.0,
+  "length_m": 72.0,
+  "terrain_resolution_m": 0.4,
+  "water_level_m": 0.0,
+  "freshwater_density_kg_m3": 1000.0,
+  "tree_count": 160,
+  "rock_count": 76,
+  "materials": {
+    "Grass": {"color": [0.29, 0.37, 0.19], "static_friction": 0.95, "dynamic_friction": 0.75},
+    "DrySand": {"color": [0.55, 0.48, 0.31], "static_friction": 0.75, "dynamic_friction": 0.55},
+    "WetSand": {"color": [0.36, 0.32, 0.21], "static_friction": 0.65, "dynamic_friction": 0.45},
+    "Mud": {"color": [0.25, 0.22, 0.14], "static_friction": 0.35, "dynamic_friction": 0.22},
+    "Riverbed": {"color": [0.33, 0.30, 0.21], "static_friction": 0.60, "dynamic_friction": 0.40}
+  },
+  "missions": [
+    {"id": "gentle_crossing", "label": "Gentle crossing", "start_xy_m": [-12.0, -23.0], "goal_xy_m": [12.0, -23.0], "goal_radius_m": 0.8},
+    {"id": "choose_entry_exit", "label": "Choose entry and exit", "start_xy_m": [-12.0, -29.0], "goal_xy_m": [12.0, 23.0], "goal_radius_m": 0.8},
+    {"id": "steep_bank_detour", "label": "Steep bank detour", "start_xy_m": [-12.0, 1.0], "goal_xy_m": [12.0, 1.0], "goal_radius_m": 0.8}
+  ],
+  "default_mission": "choose_entry_exit",
+  "water_dynamics_enabled": false,
+  "robot_present": false,
+  "parameter_status": "Research scene scaffold. Geometry and friction are initial test values, not measured field data."
+}

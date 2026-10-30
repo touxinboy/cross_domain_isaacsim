@@ -1,0 +1,142 @@
+#usda 1.0
+(
+    customLayerData = {
+        dictionary cameraSettings = {
+            dictionary Front = {
+                double3 position = (5, 0, 0)
+                double radius = 5
+            }
+            dictionary Perspective = {
+                double3 position = (5, 5, 5)
+                double3 target = (-3.978038431995401e-8, -3.978038254359717e-8, 7.956076863990802e-8)
+            }
+            dictionary Right = {
+                double3 position = (0, -5, 0)
+                double radius = 5
+            }
+            dictionary Top = {
+                double3 position = (0, 0, 5)
+                double radius = 5
+            }
+            string boundCamera = "/World/Cameras/Robot"
+        }
+        dictionary omni_layer = {
+            string authoring_layer = "./river_robot_jackets_v2.usda"
+        }
+        string owner = "L17"
+        dictionary renderSettings = {
+        }
+        string target_config = "configs/jacket_targets_v2.json"
+    }
+    defaultPrim = "World"
+    metersPerUnit = 1
+    subLayers = [
+        @river_robot_jacket_v1.usda@
+    ]
+    upAxis = "Z"
+)
+
+over "World"
+{
+    over "NavigationTargets"
+    {
+        over "Jacket" (
+            references = @../assets/targets/jacket_land_v2.usda@
+        )
+        {
+        }
+
+        def Xform "WaterJacket" (
+            customData = {
+                dictionary navigation = {
+                    string targetId = "water_jacket_inspection"
+                }
+            }
+            prepend references = @../assets/targets/jacket_water_pointed_v2.usda@
+        )
+        {
+            double3 xformOp:translate = (-2.224740133337412, -12, -0.8634400755231356)
+            uniform token[] xformOpOrder = ["xformOp:translate"]
+        }
+
+        def Xform "WaterApproachGoal" (
+            customData = {
+                bool evaluator_only = 1
+                string medium = "water"
+                double radius_m = 0.6
+            }
+        )
+        {
+            float xformOp:rotateZ = 92.46114
+            double3 xformOp:translate = (-2.009832885981787, -17, 0.0354)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateZ"]
+        }
+    }
+
+    over "Cameras"
+    {
+        over "Crossing"
+        {
+            float2 clippingRange = (0.03, 250)
+            float focalLength = 29
+            float horizontalAperture = 36
+            float verticalAperture = 20.25
+            matrix4d xformOp:transform = ( (0.7633862853691147, -0.6459422414661738, 2.775557561562892e-17, 0), (0.3504817917757011, 0.41420575391673775, 0.8399976827682094, 0), (-0.5425899860336892, -0.6412427107670873, 0.5425899860336892, 0), (-22.000000000000007, -43.00000000000001, 24, 1.0000000000000002) )
+        }
+
+        def Camera "WaterTarget"
+        {
+            float2 clippingRange = (0.03, 250)
+            float focalLength = 30
+            float horizontalAperture = 36
+            float verticalAperture = 20.25
+            matrix4d xformOp:transform = ( (0.7848827655334262, -0.6196442885790207, 2.7755575615628907e-17, 0), (0.2159345040417744, 0.27351703845291425, 0.9373156990257764, 0), (-0.5808023194967747, -0.7356829380292481, 0.34848139169806486, 0), (-9.724740133337415, -21.500000000000004, 6.500000000000003, 1.0000000000000002) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+        }
+
+        over "Robot"
+        {
+            float2 clippingRange = (0.03, 250)
+            float focalLength = 35
+            float horizontalAperture = 36
+            custom uniform vector3d omni:kit:centerOfInterest = (0, 0, -44.269199963658075)
+            float verticalAperture = 20.25
+            matrix4d xformOp:transform = ( (0.7649111981170507, -0.6441357457827799, -2.7755575615628914e-17, 0), (0.23848251185983738, 0.2831979828335567, 0.9289375619792899, 0), (-0.5983618892711672, -0.7105547435095106, 0.3702364189865348, 0), (-19.754792633468025, -37.496011219513164, 8.304924250857269, 1) )
+        }
+    }
+
+    over "Robot"
+    {
+    }
+}
+
+over "Render"
+{
+    over "OmniverseKit"
+    {
+        over "HydraTextures"
+        {
+            over "Replicator_01"
+            {
+                over "PostRender"
+                {
+                }
+            }
+
+            over "Replicator_02"
+            {
+                over "PostRender"
+                {
+                }
+            }
+
+            over "Replicator_03"
+            {
+                over "PostRender"
+                {
+                }
+            }
+        }
+    }
+}
+

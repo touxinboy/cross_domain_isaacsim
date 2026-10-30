@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "resolution_wh": [
+    720,
+    640
+  ],
+  "horizontal_fov_deg": 110.0,
+  "horizontal_aperture_mm": 30.0,
+  "yaw_degrees": {
+    "front": 0.0,
+    "left": 90.0,
+    "right": -90.0
+  },
+  "translation_body_m": [
+    0.42,
+    0.0,
+    0.4
+  ],
+  "clip_m": [
+    0.08,
+    100.0
+  ],
+  "upstream_reference": "third_party/OmniNav/infer_ovon_slowfast/config/habitat/goat_agent_config.yaml",
+  "note": "Match the author's Slowfast RGB view geometry; mounting is adapted to the own amphibious robot. Depth remains an ideal renderer observation.",
+  "mapping_nearfield": {
+    "resolution_wh": [
+      480,
+      480
+    ],
+    "horizontal_fov_deg": 100.0,
+    "pitch_down_degrees": 55.0,
+    "translation_body_m": [
+      0.38,
+      0,
+      0.5
+    ]
+  }
+}

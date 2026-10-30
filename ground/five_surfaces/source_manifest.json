@@ -1,0 +1,12 @@
+{
+  "source_project": "/home/touxinboy/HUST/isaacsim/L17/amphibious_project",
+  "unchanged_copies_sha256": {
+    "scripts/amphibian_dynamics.py": "797a657a51e65d5a477294705cfdcf34885fd5f298f2e8cbad4d74e07ac28ce1",
+    "scripts/robot_runtime.py": "020975790c618c2006540d04f32d3eff911da628dd1d78ec9368ff63fc9b5cd1",
+    "scripts/river_geometry.py": "6726b4c298855ad10485f2632acc3f4c069a0d9c4fe2eef9a4c0889b7ba2528d",
+    "scripts/robot_assets.py": "cb560715e7273c4651c28df6dc72dbfae071f0a87b8db624c9c33e12ce68dd31",
+    "configs/robot_v1.json": "40e8b6eb1a353d60e99c1460e5b466ead2c6e5ab601ba606ae71011ccb8e3925",
+    "robots/tracked_twin_thruster_v1.usda": "bcdd2628b528bf431da38768d33448d2077fdd4859ee2029d277c95ecea28e3e",
+    "configs/river_forest.json": "da014eacbc0d4b5539313e789c1960d6f47396a23d60ce5dd9fdc419083b7dec"
+  }
+}

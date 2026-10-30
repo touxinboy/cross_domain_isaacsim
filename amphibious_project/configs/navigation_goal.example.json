@@ -1,0 +1,7 @@
+{
+  "kind": "robot_arrival_pose",
+  "source": "manual_pointgoal_interface_test",
+  "goal_xy_m": [-10.0, -23.0],
+  "instruction": "Move to the explicitly supplied nearby point for a PointGoal interface test.",
+  "note": "Example coordinate only. Confirm it is observed free space before execution; this is not a localized semantic target or proof of autonomous navigation."
+}

@@ -1,0 +1,12 @@
+name: isaacsim4.5
+channels:
+  - defaults
+dependencies:
+  - python=3.10
+  - pip
+  - pip:
+      - --extra-index-url https://pypi.nvidia.com
+      - isaacsim[all,extscache]==4.5.0
+      - numpy==1.26.4
+      - opencv-python==4.11.0.86
+      - torch==2.14.1

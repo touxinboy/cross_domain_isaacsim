@@ -1,0 +1,11 @@
+{
+  "task_name": "river_robot_jackets_v2",
+  "description": "Own river with orange flat-top land jacket and orange/red pointed water jacket; manual controls and two target mission references.",
+  "physics_dt_s": 0.016666666666666666,
+  "gpu_index": 1,
+  "gravity_m_s2": 9.81,
+  "scene_file": "scenes/river_robot_jackets_v2.usda",
+  "scene_config": "configs/river_forest.json",
+  "robot_config": "configs/robot_v1.json",
+  "target_config": "configs/jacket_targets_v2.json"
+}

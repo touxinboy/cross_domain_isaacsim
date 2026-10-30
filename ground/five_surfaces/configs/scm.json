@@ -1,0 +1,67 @@
+{
+  "enabled_by_default": true,
+  "model": "SCM-style Bekker normal response and bounded vector Janosi shear",
+  "parameters_are_calibrated": false,
+  "grid_spacing_m": 0.02,
+  "visual_spacing_m": 0.02,
+  "visual_update_hz": 20,
+  "bedrock_depth_m": 0.18,
+  "shear_memory_limit_K": 5.0,
+  "soil_parameters": {
+    "Grass": {
+      "kc": 0.0,
+      "kphi": 350000.0,
+      "n": 1.1,
+      "cohesion_pa": 120.0,
+      "friction_deg": 32.0,
+      "janosi_m": 0.015,
+      "elastic_pa_per_m": 600000.0,
+      "damping_pa_s_per_m": 5000.0,
+      "shear_damping_pa_s_per_m": 1000.0
+    },
+    "DrySand": {
+      "kc": 0.0,
+      "kphi": 150000.0,
+      "n": 1.1,
+      "cohesion_pa": 20.0,
+      "friction_deg": 28.0,
+      "janosi_m": 0.02,
+      "elastic_pa_per_m": 600000.0,
+      "damping_pa_s_per_m": 5000.0,
+      "shear_damping_pa_s_per_m": 1000.0
+    },
+    "WetSand": {
+      "kc": 0.0,
+      "kphi": 220000.0,
+      "n": 1.1,
+      "cohesion_pa": 180.0,
+      "friction_deg": 26.0,
+      "janosi_m": 0.018,
+      "elastic_pa_per_m": 600000.0,
+      "damping_pa_s_per_m": 5000.0,
+      "shear_damping_pa_s_per_m": 1000.0
+    },
+    "Mud": {
+      "kc": 0.0,
+      "kphi": 80000.0,
+      "n": 1.1,
+      "cohesion_pa": 100.0,
+      "friction_deg": 18.0,
+      "janosi_m": 0.03,
+      "elastic_pa_per_m": 600000.0,
+      "damping_pa_s_per_m": 5000.0,
+      "shear_damping_pa_s_per_m": 1000.0
+    },
+    "Riverbed": {
+      "kc": 0.0,
+      "kphi": 250000.0,
+      "n": 1.1,
+      "cohesion_pa": 80.0,
+      "friction_deg": 30.0,
+      "janosi_m": 0.018,
+      "elastic_pa_per_m": 600000.0,
+      "damping_pa_s_per_m": 5000.0,
+      "shear_damping_pa_s_per_m": 1000.0
+    }
+  }
+}

@@ -1,0 +1,123 @@
+{
+  "name": "tracked_twin_thruster_v1",
+  "status": "prototype_component_checks_passed_not_hardware_calibrated",
+  "parameters_are_measured": false,
+  "mass_kg": 48.0,
+  "inertia_diagonal_kg_m2": [
+    4.0,
+    5.4,
+    7.5
+  ],
+  "gravity_m_s2": 9.81,
+  "physics_hz": 120,
+  "hull": {
+    "size_m": [
+      1.0,
+      0.6,
+      0.36
+    ],
+    "center_body_m": [
+      0.0,
+      0.0,
+      0.05
+    ]
+  },
+  "tracks": {
+    "length_m": 1.06,
+    "width_m": 0.16,
+    "height_m": 0.24,
+    "center_separation_m": 0.7,
+    "center_z_m": -0.1,
+    "patch_x_m": [
+      -0.3,
+      0.3
+    ],
+    "motor_time_constant_s": 0.15,
+    "max_speed_m_s": 1.0,
+    "longitudinal_stiffness_per_track_ns_m": 160.0,
+    "lateral_stiffness_per_patch_ns_m": 60.0,
+    "rolling_resistance_coefficient": 0.015,
+    "contact_load_filter_s": 0.035,
+    "contact_model": "rigid_track_envelope_and_four_patch_anisotropic_traction",
+    "individual_track_links": false,
+    "soil_sinkage": false
+  },
+  "buoyancy": {
+    "sealed_box_size_m": [
+      0.94,
+      0.54,
+      0.3
+    ],
+    "sealed_box_center_body_m": [
+      0.0,
+      0.0,
+      0.02
+    ],
+    "quadrature_cells": [
+      8,
+      6,
+      4
+    ],
+    "water_density_kg_m3": 1000.0,
+    "appendage_displacement_included": false
+  },
+  "hydrodynamics": {
+    "linear_drag_body": [
+      18.0,
+      60.0,
+      100.0
+    ],
+    "quadratic_drag_body": [
+      35.0,
+      100.0,
+      180.0
+    ],
+    "linear_angular_drag_body": [
+      4.0,
+      12.0,
+      8.0
+    ],
+    "quadratic_angular_drag_body": [
+      5.0,
+      15.0,
+      10.0
+    ],
+    "added_mass_included": false,
+    "current_world_m_s": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "thrusters": {
+    "positions_body_m": [
+      [
+        -0.56,
+        0.23,
+        -0.11
+      ],
+      [
+        -0.56,
+        -0.23,
+        -0.11
+      ]
+    ],
+    "force_axis_body": [
+      1.0,
+      0.0,
+      0.0
+    ],
+    "propeller_radius_m": 0.06,
+    "max_thrust_each_n": 45.0,
+    "time_constant_s": 0.2,
+    "command_mapping": "signed_linear_thrust_reference",
+    "immersion_model": "clipped_vertical_disc_immersion_fraction",
+    "wake_and_cavitation_included": false
+  },
+  "limitations": [
+    "Initial design and force coefficients have not been calibrated to a physical robot.",
+    "Track belts use equivalent contact patches; individual links and rollers are visual geometry.",
+    "Buoyancy uses a sealed hull box with volume quadrature, not CFD.",
+    "No navigation policy or learned switching policy is installed."
+  ]
+}
