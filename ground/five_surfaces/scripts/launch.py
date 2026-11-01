@@ -56,7 +56,7 @@ def select_isolation(requested, root):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("mode", choices=("gui", "check"))
+    parser.add_argument("mode", choices=("gui", "check", "turning", "straight"))
     parser.add_argument("--exec-script", help="Optional one-time GUI script inside the ground workspace.")
     parser.add_argument("--headless", action="store_true", help="Run the app without a desktop window.")
     parser.add_argument('--isolation', choices=('auto', 'bwrap', 'landlock'), default='auto',
@@ -75,7 +75,7 @@ def main():
     names = ("applications", "cache", "config", "data", "state", "run", "tmp", "shm", "logs", "kit", "cuda", "gl", "optix", "screenshots", "torch", "torch_extensions", "warp", "mpl", "numba", "huggingface")
     paths = {name: safe_directory(runtime / name, root) for name in names}
     paths["run"].chmod(0o700)
-    if args.mode == "gui":
+    if args.mode in ("gui", "turning", "straight"):
         entrypoint = isaac_entrypoint()
         # Kit normally saves acceptance beside its package, which is read-only here.
         # Keep a user's interactive acceptance in this project's own config instead.
@@ -128,11 +128,13 @@ def main():
         command.extend(["--ro-bind", "/tmp/.X11-unix", "/tmp/.X11-unix"])
     for key, value in environment.items():
         command.extend(["--setenv", key, value])
-    if args.mode == "gui":
-        startup = (PROJECT / args.exec_script).resolve() if args.exec_script else PROJECT / "scripts/open_stage.py"
+    if args.mode in ("gui", "turning", "straight"):
+        default_script = {'turning':'scripts/run_turning.py', 'straight':'scripts/run_straight.py'}.get(args.mode, 'scripts/open_stage.py')
+        startup = (PROJECT / args.exec_script).resolve() if args.exec_script else PROJECT / default_script
         if not startup.is_relative_to(root) or not startup.is_file():
             raise RuntimeError("The GUI startup script must be an existing file inside the ground workspace.")
-        target = [entrypoint, "isaacsim.exp.full.kit", "--portable-root", str(paths["kit"]),
+        experience = str(PROJECT/'configs/turning_physics.kit') if args.mode in ('turning', 'straight') else 'isaacsim.exp.full.kit'
+        target = [entrypoint, experience, "--portable-root", str(paths["kit"]),
                   "--/plugins/carb.tasking.plugin/threadCount=4", "--/plugins/omni.tbb.globalcontrol/maxThreadCount=4",
                   "--/app/renderer/resolution/width=1280", "--/app/renderer/resolution/height=720",
                   f"--/renderer/activeGpu={config.get('gui_gpu_index', 0)}", "--/renderer/multiGpu/enabled=false",
@@ -140,7 +142,12 @@ def main():
                   "--/isaac/startup/create_new_stage=false", "--/isaac/startup/ros_bridge_extension=",
                   f"--/persistent/app/captureFrame/path={paths['screenshots']}/",
                   "--/app/window/title=Ground - Five Surfaces", "--exec", str(startup)]
-        if args.headless:
+        if args.mode in ('turning', 'straight'):
+            package = Path(distribution('isaacsim').locate_file('isaacsim'))
+            for folder in ('exts', 'extscache', 'extsPhysics', 'extsDeprecated'):
+                target.extend(['--ext-folder', str(package/folder)])
+            environment['GROUND_TURN_PHYSICS_ONLY'] = '1'
+        if args.headless or args.mode in ('turning', 'straight'):
             target.extend(["--no-window", "--/app/file/ignoreUnsavedOnExit=true"])
         if args.local_assets_only:
             local_assets = safe_directory(runtime / "local_assets", root)

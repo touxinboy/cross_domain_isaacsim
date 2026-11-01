@@ -186,6 +186,8 @@ class SCMTerrain:
         force, torque = np.zeros(3), np.zeros(3)
         active, stats = [], {}
         total_cells, total_area, dissipated, reentered = 0, 0., 0., 0
+        shear_integral = 0.
+        pressure_peaks, shear_peaks = [], []
         for side, name in enumerate(('left','right')):
             ids, points, area = self._footprint(side,position,rotation)
             z = self.h0-points[:,2]
@@ -193,6 +195,9 @@ class SCMTerrain:
             ids, points, area, z = ids[contact], points[contact], area[contact], z[contact]
             load, traction, vx, lateral_rms, sinkage, rut = 0., 0., 0., 0., 0., 0.
             slip_velocity, ratio, valid_slip = float(belt_speed[side]), math.nan, False
+            stress_stats = dict(pressure_mean_pa=math.nan, pressure_max_pa=math.nan,
+                                shear_stress_mean_pa=math.nan, shear_stress_max_pa=math.nan,
+                                shear_longitudinal_mean_pa=math.nan, shear_lateral_mean_pa=math.nan)
             if len(ids):
                 reentered += int(np.count_nonzero((self.last_contact[ids] != self.step-1) & (self.plastic[ids] > 1e-4)))
                 material = self.material[ids]
@@ -228,6 +233,17 @@ class SCMTerrain:
                 stress *= np.minimum(1.,limit/np.maximum(np.linalg.norm(stress,axis=1),1e-12))[:,None]
                 tangential = stress*area[:,None]
                 normal = pressure*area
+                covered = float(area.sum())
+                stress_norm = np.linalg.norm(stress, axis=1)
+                stress_stats = dict(
+                    pressure_mean_pa=float(normal.sum()/covered), pressure_max_pa=float(pressure.max()),
+                    shear_stress_mean_pa=float(stress_norm @ area/covered),
+                    shear_stress_max_pa=float(stress_norm.max()),
+                    shear_longitudinal_mean_pa=float((stress @ forward) @ area/covered),
+                    shear_lateral_mean_pa=float((stress @ lateral) @ area/covered))
+                shear_integral += float(stress_norm @ area)
+                pressure_peaks.append(stress_stats['pressure_max_pa'])
+                shear_peaks.append(stress_stats['shear_stress_max_pa'])
                 forces = np.column_stack((tangential,normal))
                 force += forces.sum(axis=0)
                 torque += np.cross(lever,forces).sum(axis=0)
@@ -262,10 +278,16 @@ class SCMTerrain:
                 name+'_grouser_contact_cells':int(np.count_nonzero(self.grouser_fraction[side][contact]>0))
                     if self.track_surface is not None else 0,
             })
+            stats.update({name+'_'+key:value for key,value in stress_stats.items()})
         self.active = np.concatenate(active) if active else np.empty(0,dtype=np.int64)
         self.dirty_materials.update(self.material[old].tolist())
         self.dirty_materials.update(self.material[self.active].tolist())
         self.step += 1
+        stats.update(
+            soil_pressure_mean_pa=float(force[2]/total_area) if total_area else math.nan,
+            soil_pressure_max_pa=max(pressure_peaks, default=math.nan),
+            soil_shear_stress_mean_pa=shear_integral/total_area if total_area else math.nan,
+            soil_shear_stress_max_pa=max(shear_peaks, default=math.nan))
         stats.update(scm_contact_cells=total_cells, scm_contact_area_m2=total_area,
                      scm_reentered_rut_cells=reentered,
                      soil_rut_depth_max_m=self.max_rut, soil_normal_force_n=float(force[2]),

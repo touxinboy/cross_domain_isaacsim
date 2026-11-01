@@ -1,0 +1,51 @@
+{
+  "documentation_date": "2026-10-31",
+  "base_commit": "1b475ff517192d540048c45f181b26914564aa10",
+  "files_sha256": {
+    "configs/robot_v1.json": "40e8b6eb1a353d60e99c1460e5b466ead2c6e5ab601ba606ae71011ccb8e3925",
+    "configs/tracks.json": "e2a6d42724855ae2eae6e2daa1e5ac94fa58db79f3556e50333439a707db7ed2",
+    "configs/scm.json": "f8afed48a5c9d34d2920e2152b3ad869a5cf1b826ab0a8fa0d595141de1f45fc",
+    "configs/five_surfaces.json": "21f83dd31f31892847c98e06db6deee128340f1a4baeeed659b92cc9a4907e6f",
+    "scripts/track_motion.py": "c528b3405c01d7464b1e25739c4e6c8bf71c85d94a629f71adb4d2a6befedd00",
+    "scripts/track_visuals.py": "39ca530a1655fba8ba61312fa35d4a287a0bc7b0784192e77cfb1064b31806fb",
+    "scripts/scm_terrain.py": "3acd2bc801f186d1fcc95e6f4f559201f018b58a4c31fabba68af11e5407c48a",
+    "scripts/scm_scene.py": "1674e92633700fd648b0cb230b11d420831a02f7ed3e5f6ee3e72933e085ac25",
+    "scripts/amphibian_dynamics.py": "797a657a51e65d5a477294705cfdcf34885fd5f298f2e8cbad4d74e07ac28ce1",
+    "scripts/robot_runtime.py": "020975790c618c2006540d04f32d3eff911da628dd1d78ec9368ff63fc9b5cd1",
+    "scripts/ground_tools.py": "5c99628abd8123bcfd76f25af18c7b2a8aec6ba79534a0190c1fe4fb4fceb5f3",
+    "scripts/ground_telemetry.py": "e88b9e91d8c64a408a456fedc3f702d72f2b00a1f474eb4580a86bc11375ddd3"
+  },
+  "geometry": {
+    "radius_m": 0.10499999999999998,
+    "half_straight_m": 0.41000000000000003,
+    "perimeter_m": 2.2997344572538565,
+    "pitch_m": 0.04791113452612201,
+    "straight_gap_m": 0.00291113452612201
+  },
+  "dry_sand_single_cell_example": {
+    "delta_m": 0.02,
+    "previous_plastic_m": 0,
+    "p_static_pa": 2028.7300134187237,
+    "plastic_m": 0.016618783310968794,
+    "elastic_m": 0.003381216689031206,
+    "normal_velocity_m_s": -0.01,
+    "pressure_pa": 2078.7300134187235,
+    "relative_velocity_xy_m_s": [
+      -0.1,
+      0
+    ],
+    "shear_m": [
+      -0.0008333333333333334,
+      0
+    ],
+    "tau_max_pa": 1125.2803540125276,
+    "tau_jh_pa": 45.923302151672424,
+    "tau_final_pa": 145.92330215167243,
+    "force_xy_z_n": [
+      0.058369320860668976,
+      0,
+      0.8314920053674895
+    ]
+  },
+  "figure_note": "Geometry and formula illustrations; not native runtime screenshots or measured validation."
+}

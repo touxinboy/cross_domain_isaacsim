@@ -1,0 +1,16 @@
+{
+  "settle_s": 2.0,
+  "revolutions": 1.0,
+  "spin_yaw_rate_rad_s": 0.45,
+  "orbit_radius_m": 0.85,
+  "orbit_speed_m_s": 0.25,
+  "max_trial_s": 120.0,
+  "control_period_s": 0.05,
+  "boundary_margin_m": 0.67,
+  "heading_gain": 2.0,
+  "radial_gain": 0.8,
+  "yaw_rate_gain": 1.5,
+  "yaw_integral_gain": 0.4,
+  "spin_position_gain": 0.5,
+  "wall_timeout_s": 300.0
+}

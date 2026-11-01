@@ -1,10 +1,8 @@
 """SCM soft-soil controls with an explicit switch to the original rigid baseline."""
 import asyncio
 from datetime import datetime
-import json
 import math
 from pathlib import Path
-import traceback
 
 import carb
 import omni.kit.app
@@ -12,112 +10,13 @@ import omni.timeline
 import omni.ui as ui
 import omni.usd
 from omni.kit.viewport.utility import get_active_viewport
-from pxr import Gf, Usd, UsdGeom
+from pxr import Gf, Usd
 
-from ground_environment import FiveSurfaceEnvironment
-from ground_telemetry import ActiveSimulationClock, GroundTelemetry, metric_text, telemetry_metadata
+from ground_telemetry import metric_text
 from robot_assets import set_camera
-from robot_runtime import RobotRuntime
-from scm_terrain import SCMTerrain, SCMTrackForces
 from scm_scene import configure_ground, SCMTerrainView
-from track_motion import CirculatingTracks
 from track_visuals import TrackVisuals
-
-
-class GroundRuntime(RobotRuntime):
-    def __init__(self, project, config, scm_enabled=None, terrain=None):
-        self.scm_settings = json.loads((Path(project)/'configs/scm.json').read_text())
-        self.scm_enabled = self.scm_settings['enabled_by_default'] if scm_enabled is None else scm_enabled
-        self.terrain = None
-        self.track_settings = json.loads((Path(project)/'configs/tracks.json').read_text())
-        self.track_motion = None
-        self.ground_config = config
-        self.running_route = False
-        self.route_reason = None
-        self.visited = set()
-        self.next_control_s = 0.
-        self.braking_since = None
-        self.route_start_s = 0.
-        self.performance = ActiveSimulationClock()
-        super().__init__(project, 'land')
-        self.environment = FiveSurfaceEnvironment(config)
-        collider_points = [list(UsdGeom.Mesh(self.stage.GetPrimAtPath(
-            '/World/Robot/Tracks/' + side + '/Collider')).GetPointsAttr().Get())
-            for side in ('Left', 'Right')]
-        self.telemetry = GroundTelemetry(self.cfg, config, collider_points)
-        if self.scm_enabled:
-            self.terrain = terrain if terrain is not None else SCMTerrain(config,self.scm_settings,self.cfg,collider_points)
-            if self.track_settings['enabled']:
-                self.track_motion = CirculatingTracks(self.cfg,self.track_settings)
-            self.terrain.track_surface = self.track_motion
-            self.model = SCMTrackForces(self.cfg,self.terrain)
-        self.set_commands('LAND', [0., 0.], [0., 0.])
-
-    def on_timeline(self, event):
-        super().on_timeline(event)
-        if event.type == int(omni.timeline.TimelineEventType.PLAY):
-            self.performance.resume(self.sim_time)
-        elif event.type in (int(omni.timeline.TimelineEventType.PAUSE), int(omni.timeline.TimelineEventType.STOP)):
-            self.performance.pause(self.sim_time)
-
-    def begin_route(self):
-        self.visited.clear()
-        self.route_reason = None
-        self.running_route = True
-        self.route_start_s = self.sim_time
-        self.braking_since = None
-
-    def finish_route(self, reason):
-        self.zero()
-        self.running_route = False
-        self.route_reason = reason
-        self.timeline.pause()
-
-    def on_step(self, dt):
-        if self.timeline.is_playing():
-            self.performance.resume(self.sim_time)
-        before = self.sim_time
-        super().on_step(dt)
-        if before == self.sim_time or self.error:
-            return
-        row = self.latest
-        try:
-            row.update(self.telemetry.measure(row, float(dt)))
-            if self.scm_enabled:
-                row.update(self.model.soil_metrics)
-            row['ground_model'] = 'scm' if self.scm_enabled else 'rigid'
-            row.update(self.performance.sample(self.sim_time))
-        except Exception:
-            self.fail('ground_telemetry', traceback.format_exc())
-            return
-        tile = self.environment.surface_at(row['x_m'], row['y_m'])
-        row['surface'] = tile['id'] if tile else 'Outside'
-        row['surface_dynamic_friction'] = tile['dynamic_friction'] if tile else 0.
-        if tile and row['left_normal_n']+row['right_normal_n'] > 10.:
-            self.visited.add(tile['id'])
-        if not self.running_route or self.sim_time < self.next_control_s:
-            return
-        self.next_control_s = self.sim_time+.05
-        elapsed = self.sim_time-self.route_start_s
-        if elapsed > 90 or not tile or abs(row['roll_deg']) > 30 or abs(row['pitch_deg']) > 30:
-            self.finish_route('safety_stop')
-            return
-        if elapsed < 1.:
-            self.zero()
-            return
-        if row['x_m'] >= self.ground_config['goal_x_m'] or self.braking_since is not None:
-            self.zero()
-            if self.braking_since is None:
-                self.braking_since = self.sim_time
-            if math.hypot(row['vx_m_s'],row['vy_m_s']) < .05 and self.sim_time-self.braking_since > .6:
-                self.finish_route('completed')
-            return
-        yaw = math.atan2(math.sin(row['yaw_rad']), math.cos(row['yaw_rad']))
-        yaw_rate = max(-.45, min(.45, -1.4*yaw-.18*row['y_m']))
-        speed = self.ground_config['drive_speed_m_s']
-        half = self.cfg['tracks']['center_separation_m']/2
-        self.set_commands('LAND', [speed-yaw_rate*half, speed+yaw_rate*half], [0.,0.])
-
+from ground_runtime import GroundRuntime
 
 class GroundTools:
     def __init__(self, project, config, scm_enabled=None):
@@ -128,6 +27,11 @@ class GroundTools:
         self.track_view = TrackVisuals(self.runtime.stage,self.runtime.track_motion) if self.runtime.track_motion else None
         self.follow_robot = False
         self.saved_route = False
+        self.turn_running = False
+        self.turn_cancel = False
+        self.turn_status = ''
+        self.export_status = ''
+        self.suppress_manual = False
         self.left = ui.SimpleFloatModel(0.)
         self.right = ui.SimpleFloatModel(0.)
         self.window = ui.Window('Five Surfaces - L17 Robot', width=440, height=700)
@@ -141,7 +45,7 @@ class GroundTools:
                               clicked_fn=lambda:asyncio.ensure_future(self.switch_model()))
                     ui.Separator(height=8)
                     ui.Label('LIVE TELEMETRY | slip / sinkage / drive', height=22)
-                    self.metrics_label = ui.Label('Slip / sinkage / RTF: waiting for Play', height=190, word_wrap=True)
+                    self.metrics_label = ui.Label('Slip / sinkage / RTF: waiting for Play', height=225, word_wrap=True)
                     ui.Label('Slip N/A: low speed or no contact', height=20)
                     self.surface_labels = []
                     with ui.CollapsableFrame('Surface materials',collapsed=True,height=0):
@@ -167,10 +71,19 @@ class GroundTools:
                         ui.Button('Pause',clicked_fn=self.pause)
                         ui.Button('Reset',clicked_fn=lambda:asyncio.ensure_future(self.reset()))
                     ui.Button('Run across all five surfaces',height=30,clicked_fn=lambda:asyncio.ensure_future(self.run_route()))
+                    with ui.CollapsableFrame('Turning experiments / comparison plots', collapsed=False, height=0):
+                        with ui.VStack(spacing=4):
+                            ui.Label('Fresh soil per trial | one CCW revolution', height=22)
+                            with ui.HStack(height=26, spacing=5):
+                                ui.Button('Spin on current surface', clicked_fn=lambda:self.start_turns(('spin',)))
+                                ui.Button('Orbit on current surface', clicked_fn=lambda:self.start_turns(('orbit',)))
+                            ui.Button('Compare both turns on all five surfaces', height=28,
+                                      clicked_fn=lambda:self.start_turns(('spin','orbit'), all_surfaces=True))
+                            ui.Button('Stop turning experiment', height=24, clicked_fn=self.pause)
                     ui.Button('Reset vehicle / keep ruts',height=26,
                               clicked_fn=lambda:asyncio.ensure_future(self.reset(clear_soil=False)))
-                    ui.Button('Export telemetry CSV',height=26,clicked_fn=self.export)
-                    self.status_label = ui.Label('Ready on tile 1. Press Forward, then Play.',height=70,word_wrap=True)
+                    ui.Button('Export telemetry CSV + plots',height=26,clicked_fn=self.export)
+                    self.status_label = ui.Label('Ready on tile 1. Press Forward, then Play.',height=115,word_wrap=True)
         self.update_sub = omni.kit.app.get_app().get_update_event_stream().create_subscription_to_pop(self.on_update)
         self.camera('Overview')
         self.update_mode_label()
@@ -183,6 +96,11 @@ class GroundTools:
         get_active_viewport().set_active_camera('/World/Cameras/'+name)
 
     def manual_commands(self):
+        if self.suppress_manual:
+            return
+        if self.turn_running:
+            self.turn_cancel = True
+            self.runtime.turn_trial = None
         if self.runtime.running_route:
             return
         self.runtime.set_commands('LAND',[self.left.as_float,self.right.as_float],[0.,0.])
@@ -207,7 +125,9 @@ class GroundTools:
     async def switch_model(self):
         await self.reset(scm_enabled=not self.runtime.scm_enabled)
 
-    async def reset(self, clear_soil=True, scm_enabled=None, position=None):
+    async def reset(self, clear_soil=True, scm_enabled=None, position=None, _turn_reset=False):
+        if not _turn_reset:
+            self.turn_cancel = True
         mode = self.runtime.scm_enabled if scm_enabled is None else scm_enabled
         terrain = self.runtime.terrain if not clear_soil and mode == self.runtime.scm_enabled else None
         self.runtime.running_route=False
@@ -230,8 +150,12 @@ class GroundTools:
         self.saved_route=False
         self.metrics_label.text = 'Slip / sinkage / RTF: waiting for Play'
         self.status_label.text = 'Ready on tile 1. Press Forward, then Play.'
-        self.left.set_value(0.)
-        self.right.set_value(0.)
+        self.suppress_manual = True
+        try:
+            self.left.set_value(0.)
+            self.right.set_value(0.)
+        finally:
+            self.suppress_manual = False
         await app.next_update_async()
 
     async def run_route(self):
@@ -239,52 +163,43 @@ class GroundTools:
         self.runtime.begin_route()
         self.runtime.timeline.play()
 
+    def start_turns(self, modes, all_surfaces=False):
+        if self.turn_running:
+            return
+        tiles = self.config['surfaces']
+        if not all_surfaces:
+            row = self.runtime.latest
+            tile = self.runtime.environment.surface_at(row['x_m'], row['y_m']) if row else tiles[0]
+            if tile is None:
+                self.turn_status = 'Vehicle is outside all surfaces; reset first.'
+                return
+            tiles = [tile]
+        self.turn_task = asyncio.ensure_future(self.run_turns(modes=modes, tiles=tiles))
+
+    async def run_turns(self, modes=('spin','orbit'), tiles=None, settings=None):
+        from turning_session import run_turning_batch
+        return await run_turning_batch(self, modes=modes, tiles=tiles, settings=settings)
+
     def export(self):
+        from ground_export import save_ground_run, plot_ground_run
         if not self.runtime.history:
             return None
-        output=self.project/'results/five_surfaces'/datetime.now().strftime('run_%Y%m%d_%H%M%S_%f')
-        output.mkdir(parents=True,exist_ok=False)
-        self.runtime.save_csv(output/'physics.csv')
-        row=self.runtime.latest
-        summary={'result':self.runtime.route_reason or 'manual_export',
-                 'visited_surfaces':sorted(self.runtime.visited),
-                 'physics_samples':len(self.runtime.history),
-                 'final_position_m':[row[k] for k in ['x_m','y_m','z_m']],
-                 'soil_model':'scm_style_bekker_vector_janosi' if self.runtime.scm_enabled else 'unchanged_L17_rigid_ground',
-                 'chassis_mass_and_inertia_unchanged':True,
-                 'nominal_track_dimensions_preserved':True,
-                 'robot_physics_unchanged':not self.runtime.scm_enabled,
-                 'telemetry':telemetry_metadata(),
-                 'final_metrics':{key:value for key,value in row.items()
-                                  if key.startswith(('rtf_', 'active_wall_', 'left_slip', 'right_slip',
-                                                     'left_sinkage', 'right_sinkage', 'left_rut', 'right_rut',
-                                                     'left_belt_', 'right_belt_', 'left_sprocket_', 'right_sprocket_',
-                                                     'left_grouser_', 'right_grouser_', 'soil_', 'scm_', 'native_track_'))}}
-        # JSON uses null for unavailable metrics; CSV retains explicit NaN.
-        summary['final_metrics']={key:(None if isinstance(value,float) and not math.isfinite(value) else value)
-                                  for key,value in summary['final_metrics'].items()}
-        if self.runtime.scm_enabled:
-            self.runtime.terrain.save(output/'soil_state.npz')
-            summary['scm_settings'] = self.runtime.scm_settings
-            summary['track_settings'] = self.runtime.track_settings
-            summary['telemetry'].update(sinkage='maximum h0 minus distributed track-envelope ray intersection height in compressed cells',
-                sinkage_scope='SCM total geometric sinkage relative to initial soil surface',
-                slip_source='normal-force-weighted distributed contact velocities and filtered equivalent belt speed',
-                lateral_slip='normal-force-weighted RMS transverse velocity over distributed contact cells; m/s',
-                slip_distance='integral of normal-force-weighted abs local longitudinal slip velocity during contact; m',
-                rut_depth='plastic sinkage, retained on unload; no bulk soil flow',
-                normal_force='sum of SCM normal forces; native_track_normal_n records rigid contact separately')
-            if self.runtime.track_motion:
-                summary['telemetry'].update(
-                    track_geometry='moving plates and grousers follow a fixed loop; no independent link dynamics',
-                    sinkage='maximum h0 minus moving shoe/grouser ray intersection height in compressed cells',
-                    slip_source='distributed material contact velocities including shoe translation and rotation',
-                    belt_phase='integral of filtered belt speed; shared by render geometry and soil contact',
-                    sprocket_angle='derived from belt travel and pitch radius, not a physical encoder')
-        (output/'summary.json').write_text(json.dumps(summary,indent=2)+'\n')
+        output = self.project/'results/five_surfaces'/datetime.now().strftime('run_%Y%m%d_%H%M%S_%f')
+        save_ground_run(self.runtime, output)
+        self.last_export = output
+        self.export_status = 'Generating line charts: '+str(output)
+
+        async def finish_plots():
+            summary = await plot_ground_run(output)
+            self.export_status = ('Charts saved: ' if summary['plots_state'] == 'ready' else
+                                  'CSV saved; chart generation failed: ')+str(output)
+            print('GROUND_EXPORT '+self.export_status, flush=True)
+        self.plot_task = asyncio.ensure_future(finish_plots())
         return output
 
     def on_update(self, event):
+        if omni.usd.get_context().get_stage() != self.runtime.stage:
+            return
         row=self.runtime.latest
         if self.track_view:
             self.track_view.update(self.runtime.sim_time)
@@ -296,7 +211,9 @@ class GroundTools:
         if self.runtime.scm_enabled:
             self.metrics_label.text += (f"\nRuts max: {row['soil_rut_depth_max_m']*1000:.1f} mm"
                 f" | cells: {row['scm_contact_cells']}\n"
-                f"SCM: {row['scm_step_ms']:.2f} ms | mesh: {self.terrain_view.last_update_ms:.2f} ms")
+                f"SCM: {row['scm_step_ms']:.2f} ms | mesh: {self.terrain_view.last_update_ms:.2f} ms\n"
+                f"Pressure mean / max: {row['soil_pressure_mean_pa']/1000:.2f} / {row['soil_pressure_max_pa']/1000:.2f} kPa\n"
+                f"Shear mean / max: {row['soil_shear_stress_mean_pa']/1000:.2f} / {row['soil_shear_stress_max_pa']/1000:.2f} kPa")
             if self.runtime.track_motion:
                 self.metrics_label.text += (f"\nGrouser cells L/R: {row['left_grouser_contact_cells']} / {row['right_grouser_contact_cells']}")
         if self.follow_robot:
@@ -308,6 +225,10 @@ class GroundTools:
                                 f"Speed: {math.hypot(row['vx_m_s'],row['vy_m_s']):.2f} m/s  |  "
                                 f"Visited: {len(self.runtime.visited)}/5\n"
                                 f"{self.runtime.error or self.runtime.route_reason or ('Auto run' if self.runtime.running_route else 'Manual')}")
+        if self.turn_status:
+            self.status_label.text += '\n'+self.turn_status
+        if self.export_status:
+            self.status_label.text += '\n'+self.export_status
         if self.runtime.route_reason and not self.saved_route:
             self.export()
             self.saved_route=True

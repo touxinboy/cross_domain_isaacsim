@@ -1,0 +1,100 @@
+{
+  "passed": true,
+  "result": "completed",
+  "samples": 4730,
+  "simulated_s": 39.41666872240603,
+  "visited": [
+    "DrySand",
+    "Grass",
+    "Mud",
+    "Riverbed",
+    "WetSand"
+  ],
+  "plots": [
+    "plots/straight_timeseries.png",
+    "plots/straight_timeseries.svg",
+    "plots/straight_surface_comparison.png",
+    "plots/straight_surface_comparison.svg",
+    "plots/straight_stress_peaks.png",
+    "plots/straight_stress_peaks.svg"
+  ],
+  "max_native_track_normal_n": 0.0,
+  "pressure_integral_verified": true,
+  "plot_artifacts_verified": true,
+  "material_intervals": [
+    {
+      "surface": "Grass",
+      "first_sample": 0,
+      "stop_sample": 801,
+      "start_time_s": 0.008333333767950535,
+      "end_time_s": 6.683333681896329
+    },
+    {
+      "surface": "DrySand",
+      "first_sample": 801,
+      "stop_sample": 1865,
+      "start_time_s": 6.683333681896329,
+      "end_time_s": 15.550000810995698
+    },
+    {
+      "surface": "WetSand",
+      "first_sample": 1865,
+      "stop_sample": 2924,
+      "start_time_s": 15.550000810995698,
+      "end_time_s": 24.375001271255314
+    },
+    {
+      "surface": "Mud",
+      "first_sample": 2924,
+      "stop_sample": 3993,
+      "start_time_s": 24.375001271255314,
+      "end_time_s": 33.283335069194436
+    },
+    {
+      "surface": "Riverbed",
+      "first_sample": 3993,
+      "stop_sample": 4730,
+      "start_time_s": 33.283335069194436,
+      "end_time_s": 39.41666872240603
+    }
+  ],
+  "final_position_m": [
+    8.578264236450195,
+    7.173206047302674e-18,
+    0.19900120794773102
+  ],
+  "date": "2026-11-01",
+  "unit_tests_passed": 36,
+  "gui_auto_export_verified": true,
+  "gui_and_physics_only_match": true,
+  "matched_fields": [
+    "time_s",
+    "x_m",
+    "y_m",
+    "z_m",
+    "yaw_rad",
+    "left_slip_ratio",
+    "right_slip_ratio",
+    "left_sinkage_m",
+    "right_sinkage_m",
+    "soil_pressure_mean_pa",
+    "soil_shear_stress_mean_pa"
+  ],
+  "matched_samples": 4730,
+  "result_directories": [
+    "results/five_surfaces/run_20261101_132159_097264",
+    "results/five_surfaces/run_20261101_132512_924339"
+  ],
+  "soil_parameters_calibrated": false,
+  "source_sha256": {
+    "scripts/ground_tools.py": "18f5b33d91de34f96fa7a9a08a76b8bb4c602e788c742ae51e1f68a08e7cc3ce",
+    "scripts/ground_runtime.py": "ba866d50d6e948680a3be1681213c8128c2c6c66ba70acd9f8241d24e90f8981",
+    "scripts/ground_export.py": "b8241e9d0a520da673273fd1075f5cd1cd267c5872a6d107f198d70ed90209a7",
+    "scripts/plot_straight.py": "b4d1aafaea99d065e15b3182e7c748fc1e24a72b5c012257a996da68315a718b",
+    "scripts/run_straight.py": "e5e3628d2d04a4e98382382769c34d9caad23c1591ecbcde7387e6e856659cab",
+    "scripts/launch.py": "9bbe52c10a2f1ffab4749c8dd24f2927d6b387f38ee18efa9b934871676ae3b8",
+    "configs/scm.json": "f8afed48a5c9d34d2920e2152b3ad869a5cf1b826ab0a8fa0d595141de1f45fc",
+    "configs/tracks.json": "e2a6d42724855ae2eae6e2daa1e5ac94fa58db79f3556e50333439a707db7ed2",
+    "configs/five_surfaces.json": "21f83dd31f31892847c98e06db6deee128340f1a4baeeed659b92cc9a4907e6f"
+  }
+}

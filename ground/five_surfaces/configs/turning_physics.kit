@@ -1,0 +1,28 @@
+[package]
+title = "Five Surfaces Turning Physics"
+version = "1.0.0"
+
+[dependencies]
+"omni.kit.loop-isaac" = {}
+"omni.kit.async_engine" = {}
+"omni.kit.exec.core" = {}
+"omni.usd" = {}
+"omni.timeline" = {}
+"omni.physx" = {}
+"omni.physx.stageupdate" = {}
+"omni.physics.tensors" = {}
+"omni.physx.tensors" = {}
+"omni.kit.pip_archive" = {}
+
+[settings]
+app.name = "Turning Physics"
+app.version = "1.0.0"
+app.window.enabled = false
+app.renderer.enabled = false
+app.settings.persistent = false
+app.extensions.registryEnabled = false
+app.file.ignoreUnsavedOnExit = true
+app.runLoops.main.rateLimitEnabled = false
+app.runLoops.main.rateLimitFrequency = 120
+app.runLoops.main.rateLimitUseBusyLoop = false
+
